@@ -19,7 +19,7 @@ void AMainPaperZDCharacter::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(InputMappingContext, 0);
+			Subsystem->AddMappingContext(InputMappingContext, 1);
 		}
 	}
 }
