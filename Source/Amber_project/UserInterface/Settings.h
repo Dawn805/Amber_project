@@ -5,34 +5,32 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
-#include "Menu.generated.h"
+#include "Settings.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AMBER_PROJECT_API UMenu : public UUserWidget
+class AMBER_PROJECT_API USettings : public UUserWidget
 {
 	GENERATED_BODY()
 
 protected:
 	virtual void NativeConstruct() override;
 
-private:
+public:
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Continue;
+	UButton* Button_KeysChange;
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Settings;
+	UButton* Button_Sound;
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_GotoMainMenu;
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Exit;
+	UButton* Button_ComeBack;
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void Button_Continue_OnClicked();
+	void Button_KeysChange_OnClicked();
 	UFUNCTION(BlueprintCallable)
-	void Button_Exit_OnClicked();
+	void Button_Sound_OnClicked();
 	UFUNCTION(BlueprintCallable)
-	void Button_Settings_OnClicked();
+	void Button_Come_Back_OnClicked();
 };

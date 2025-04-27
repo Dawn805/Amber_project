@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "EnhancedInputComponent.h"
+#include "UserInterface/Settings.h"
 #include "MainPlayerController.generated.h"
 
 /**
@@ -30,10 +31,25 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OpenMenu(const struct FInputActionInstance& Instance);
+	UFUNCTION(BlueprintCallable)
+	void CloseMenu();
+	
+	UFUNCTION(BlueprintCallable)
+	void OpenSettings();
+	UFUNCTION(BlueprintCallable)
+	void CloseSettings();
 
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> MenuWidgetClass;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	UUserWidget* MenuWidgetInstance = nullptr;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UUserWidget> SettingsWidgetClass;
+	UPROPERTY()
+	UUserWidget* SettingsWidgetInstance = nullptr;
+	
+	
+	
 };

@@ -16,8 +16,6 @@ void AMainPlayerController::BeginPlay()
 			Subsystem->AddMappingContext(InputMapping, 0);
 		}
 	}
-
-	
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -49,9 +47,54 @@ void AMainPlayerController::OpenMenu(const struct FInputActionInstance& Instance
 	}
 	if (MenuWidgetInstance)
 	{
-		MenuWidgetInstance->RemoveFromParent();
-		MenuWidgetInstance = nullptr;
-		this->bShowMouseCursor = false;
-		this->SetPause(false);
+		CloseMenu();
 	}
 }
+
+void AMainPlayerController::CloseMenu()
+{
+	if (MenuWidgetInstance)
+	{
+		MenuWidgetInstance->RemoveFromParent();
+		MenuWidgetInstance = nullptr;
+	}
+
+	if (SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance->RemoveFromParent();
+		SettingsWidgetInstance = nullptr;
+	}
+		
+	this->bShowMouseCursor = false;
+	this->SetPause(false);
+}
+
+void AMainPlayerController::OpenSettings()
+{
+	if (SettingsWidgetClass && !SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance = CreateWidget<UUserWidget>(GetWorld(),SettingsWidgetClass);
+		if (SettingsWidgetInstance)
+		{
+			SettingsWidgetInstance->AddToViewport();
+		}
+		if (MenuWidgetInstance)
+		{
+			MenuWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+void AMainPlayerController::CloseSettings()
+{
+	if (SettingsWidgetInstance)
+	{
+		SettingsWidgetInstance->RemoveFromParent();
+		SettingsWidgetInstance = nullptr;
+	}
+	
+	if (MenuWidgetInstance)
+	{
+		MenuWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
