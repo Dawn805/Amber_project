@@ -5,6 +5,7 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "Amber_project/Player/Component/StateComponent.h"
+#include "GameFramework/Character.h"
 #include "MainPaperZDCharacter.generated.h"
 
 UCLASS()
@@ -36,7 +37,7 @@ protected:
 	UInputAction* Attack_UAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* Attack_IAction;
-	
+
 	virtual void MoveRight(const struct FInputActionInstance& Instance);
 	virtual void MoveJump(const struct FInputActionInstance& Instance);
 	virtual void Attack_J(const struct FInputActionInstance& Instance);
@@ -46,4 +47,10 @@ protected:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UStateComponent* StateComponent;
+
+	virtual void OnJumped_Implementation() override;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName AnimNodeName_Jump = "No";
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName StateMachineName = "No";
 };

@@ -3,6 +3,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperZDAnimInstance.h"
 
 AMainPaperZDCharacter::AMainPaperZDCharacter()
 {
@@ -71,6 +72,15 @@ void AMainPaperZDCharacter::MoveRight(const FInputActionInstance& Instance)
 void AMainPaperZDCharacter::MoveJump(const struct FInputActionInstance& Instance)
 {
 	Super::Jump();
+}
+
+void AMainPaperZDCharacter::OnJumped_Implementation()
+{
+	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
+	if (FAnimInstance && AnimNodeName_Jump != "No" && StateMachineName != "No")
+	{
+		FAnimInstance->JumpToNode(AnimNodeName_Jump,StateMachineName);
+	}
 }
 
 
