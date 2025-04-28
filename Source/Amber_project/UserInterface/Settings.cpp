@@ -2,6 +2,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/WidgetSwitcher.h"
 #include "Amber_project/MainPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 void USettings::NativeConstruct()
 {
@@ -14,19 +15,6 @@ void USettings::NativeConstruct()
 	if (Button_ComeBack)
 		Button_ComeBack->OnClicked.AddDynamic(this, &USettings::Button_Come_Back_OnClicked);
 
-	if (Button_Reset)
-		Button_Reset->OnClicked.AddDynamic(this, &USettings::Button_Reset_OnClicked);
-
-
-	KeysChangeManager = NewObject<UKeysChangeManager>(this);
-	if (APlayerController* PC = GetOwningPlayer())
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-		{
-			KeysChangeManager->Initialize(Subsystem);
-		}
-	}
-
 	SelectorToKeyID.Add(InputKeySelector_MoveLeft, 0);
 	SelectorToKeyID.Add(InputKeySelector_MoveRight, 1);
 	SelectorToKeyID.Add(InputKeySelector_Jump, 2);
@@ -34,20 +22,7 @@ void USettings::NativeConstruct()
 	SelectorToKeyID.Add(InputKeySelector_Attack_U, 4);
 	SelectorToKeyID.Add(InputKeySelector_Attack_I, 5);
 
-	for (auto& Elem : SelectorToKeyID)
-	{
-		UInputKeySelector* Selector = Elem.Key;
-		int32 KeyID = Elem.Value;
-		if (Selector && KeysChangeManager && KeysChangeManager->KeySaveObject)
-		{
-			TMap<int32, FKey> CurrentMap = KeysChangeManager->GetKeyMap();
-			if (CurrentMap.Contains(KeyID))
-			{
-				Selector->SetSelectedKey(CurrentMap[KeyID]);
-			}
-		}
-	}
-
+	RefreshKeySelectors();
 }
 
 void USettings::Button_KeysChange_OnClicked()
@@ -76,25 +51,20 @@ void USettings::ShowWitchPanel(UCanvasPanel* Panel)
 	}
 }
 
-
-void USettings::Button_Reset_OnClicked()
+void USettings::RefreshKeySelectors()
 {
-	if (KeysChangeManager)
+	TMap<int,FKey> SavedKeyMap = UKeySaveLibrary::GetStatKeyMap();
+	for (const TPair<UInputKeySelector*,int>& Pair : SelectorToKeyID)
 	{
-		KeysChangeManager->ResetKeyMap();
-	}
+		UInputKeySelector* Selector = Pair.Key;
+		int KeyID = Pair.Value;
 
-	for (auto& Elem : SelectorToKeyID)
-	{
-		UInputKeySelector* Selector = Elem.Key;
-		int32 KeyID = Elem.Value;
-		if (Selector && KeysChangeManager && KeysChangeManager->KeySaveObject)
+		if (Selector && SavedKeyMap.Contains(KeyID))
 		{
-			TMap<int32, FKey> CurrentMap = KeysChangeManager->GetKeyMap();
-			if (CurrentMap.Contains(KeyID))
-			{
-				Selector->SetSelectedKey(CurrentMap[KeyID]);
-			}
+			FInputChord NewChord;
+			NewChord.Key = SavedKeyMap[KeyID];
+
+			Selector->SetSelectedKey(NewChord);
 		}
 	}
 }

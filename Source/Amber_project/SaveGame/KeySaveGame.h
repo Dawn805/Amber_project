@@ -15,8 +15,21 @@ class AMBER_PROJECT_API UKeySaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<int,FKey> CurrentKeyMap;
+	UKeySaveGame();
+	
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<int,FKey> DefaultKeyMap;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<int,FKey> CurrentKeyMap;
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	TMap<int,FKey> GetKeyMap();
+
+	UFUNCTION(BlueprintCallable)
+	void SetKeyMap(const TMap<int,FKey>& NewKeyMap);
+
+	UFUNCTION(BlueprintCallable)
+	TMap<int,FKey> ResetKeyMap();
 };

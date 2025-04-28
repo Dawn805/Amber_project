@@ -6,8 +6,6 @@
 #include "Components/CanvasPanel.h"
 #include "Components/WidgetSwitcher.h"
 #include "InputCoreTypes.h"
-
-#include "Amber_project/UserInterface/Component/KeysChangeManager.h"
 #include "Components/InputKeySelector.h"
 
 #include "Settings.generated.h"
@@ -49,10 +47,6 @@ public:
 	void ShowWitchPanel(UCanvasPanel* Panel);
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<class UKeysChangeManager> KeysChangeManager;
-
-public:
 	UPROPERTY(meta = (BindWidget))
 	UInputKeySelector* InputKeySelector_MoveLeft;
 	UPROPERTY(meta = (BindWidget))
@@ -73,6 +67,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Reset;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Save;
+
+public:
 	UFUNCTION(BlueprintCallable)
-	void Button_Reset_OnClicked();
+	void RefreshKeySelectors();
+
+
 };

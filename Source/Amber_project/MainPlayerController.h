@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "EnhancedInputComponent.h"
 #include "UserInterface/Settings.h"
+#include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
 #include "MainPlayerController.generated.h"
 
 /**
@@ -49,5 +50,9 @@ public:
 	TSubclassOf<UUserWidget> SettingsWidgetClass;
 	UPROPERTY()
 	UUserWidget* SettingsWidgetInstance = nullptr;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void InitKeySave();
 	
 };

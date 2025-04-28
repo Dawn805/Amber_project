@@ -16,6 +16,8 @@ void AMainPlayerController::BeginPlay()
 			Subsystem->AddMappingContext(InputMapping, 0);
 		}
 	}
+
+	InitKeySave();
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -98,3 +100,14 @@ void AMainPlayerController::CloseSettings()
 	}
 }
 
+
+void AMainPlayerController::InitKeySave()
+{
+	UKeySaveLibrary::CreateSave();
+
+	TMap<int,FKey> KeyMap = UKeySaveLibrary::GetStatKeyMap();
+	if (KeyMap.IsEmpty())
+	{
+		UKeySaveLibrary::ResetStatKeyMap();
+	}
+}
