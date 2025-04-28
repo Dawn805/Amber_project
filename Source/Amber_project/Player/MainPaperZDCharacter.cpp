@@ -37,6 +37,8 @@ void AMainPaperZDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	{
 		if (MoveRightAction)
 			EnhancedInput->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &AMainPaperZDCharacter::MoveRight);
+		if (MoveLeftAction)
+			EnhancedInput->BindAction(MoveLeftAction, ETriggerEvent::Triggered, this,&AMainPaperZDCharacter::MoveRight);
 		if (MoveJumpAction)
 			EnhancedInput->BindAction(MoveJumpAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Jump);
 		if (Attack_JAction)

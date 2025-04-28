@@ -50,6 +50,4 @@ public:
 	UPROPERTY()
 	UUserWidget* SettingsWidgetInstance = nullptr;
 	
-	
-	
 };

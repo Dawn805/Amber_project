@@ -1,15 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/CanvasPanel.h"
+#include "Components/WidgetSwitcher.h"
+#include "InputCoreTypes.h"
+
+#include "Amber_project/UserInterface/Component/KeysChangeManager.h"
+#include "Components/InputKeySelector.h"
+
 #include "Settings.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class AMBER_PROJECT_API USettings : public UUserWidget
 {
@@ -33,4 +35,44 @@ public:
 	void Button_Sound_OnClicked();
 	UFUNCTION(BlueprintCallable)
 	void Button_Come_Back_OnClicked();
+
+public:
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UWidgetSwitcher> SettingsSwitcher;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCanvasPanel> Panel_KeysChange;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCanvasPanel> Panel_Sound;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void ShowWitchPanel(UCanvasPanel* Panel);
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UKeysChangeManager> KeysChangeManager;
+
+public:
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_MoveLeft;
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_MoveRight;
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_Jump;
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_Attack_J;
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_Attack_U;
+	UPROPERTY(meta = (BindWidget))
+	UInputKeySelector* InputKeySelector_Attack_I;
+
+	UPROPERTY()
+	TMap<UInputKeySelector*, int32> SelectorToKeyID;
+
+public:
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Reset;
+
+	UFUNCTION(BlueprintCallable)
+	void Button_Reset_OnClicked();
 };

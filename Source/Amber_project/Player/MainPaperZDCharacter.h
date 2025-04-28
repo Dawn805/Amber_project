@@ -24,18 +24,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class UInputMappingContext* InputMappingContext;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* MoveRightAction;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UInputAction* MoveLeftAction;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* MoveJumpAction;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* Attack_JAction;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* Attack_UAction;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* Attack_IAction;
 
 	virtual void MoveRight(const struct FInputActionInstance& Instance);
