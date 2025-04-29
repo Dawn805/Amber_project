@@ -22,7 +22,14 @@ void USettings::NativeConstruct()
 	SelectorToKeyID.Add(InputKeySelector_Attack_U, 4);
 	SelectorToKeyID.Add(InputKeySelector_Attack_I, 5);
 
+	TempKeyMap = UKeySaveLibrary::GetStatKeyMap();
+
 	RefreshKeySelectors();
+
+	if (Button_Save)
+		Button_Save->OnClicked.AddDynamic(this, &USettings::Button_Save_OnClicked);
+	if (Button_Reset)
+		Button_Reset->OnClicked.AddDynamic(this,&USettings::Button_Reset_OnClicked);
 }
 
 void USettings::Button_KeysChange_OnClicked()
@@ -67,4 +74,114 @@ void USettings::RefreshKeySelectors()
 			Selector->SetSelectedKey(NewChord);
 		}
 	}
+}
+
+
+void USettings::OnKeySelected_MoveLeft(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_MoveLeft;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+void USettings::OnKeySelected_MoveRight(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_MoveRight;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+void USettings::OnKeySelected_Jump(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_Jump;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+void USettings::OnKeySelected_Attack_J(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_Attack_J;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+void USettings::OnKeySelected_Attack_I(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_Attack_I;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+void USettings::OnKeySelected_Attack_U(UInputKeySelector* Selector,FInputChord SelectedChord)
+{
+	Selector = this->InputKeySelector_Attack_U;
+	if (!Selector) return;
+
+	int* FindID = SelectorToKeyID.Find(Selector);
+	if (!FindID) return;
+	TempKeyMap[*FindID] = SelectedChord.Key;
+}
+
+
+void USettings::Button_Save_OnClicked()
+{
+	UKeySaveLibrary::SetStatKeyMap(TempKeyMap);
+	RefreshKeySelectors();
+
+	UInputMappingContext* NewMappingContext = NewObject<UInputMappingContext>(this);
+	for (int i = 0 ; i < InputMappingContext->GetMappings().Num(); i++)
+	{
+		NewMappingContext->MapKey(InputMappingContext->GetMappings()[i].Action,TempKeyMap[i]);
+	}
+
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if(PC && PC->GetLocalPlayer())
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = PC->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+
+		if(Subsystem)
+		{
+			Subsystem->RemoveMappingContext(InputMappingContext);
+			Subsystem->AddMappingContext(NewMappingContext, 0);
+		}
+	}
+
+	InputMappingContext = NewMappingContext;
+}
+
+void USettings::Button_Reset_OnClicked()
+{
+	TempKeyMap = UKeySaveLibrary::ResetStatKeyMap();
+	UKeySaveLibrary::SetStatKeyMap(TempKeyMap);
+	RefreshKeySelectors();
+
+	UInputMappingContext* DefaultMappingContext = NewObject<UInputMappingContext>(this);
+	for (int i = 0 ; i < InputMappingContext->GetMappings().Num(); i++)
+	{
+		DefaultMappingContext->MapKey(InputMappingContext->GetMappings()[i].Action,TempKeyMap[i]);
+	}
+
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if(PC && PC->GetLocalPlayer())
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = PC->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+
+		if(Subsystem)
+		{
+			Subsystem->RemoveMappingContext(InputMappingContext);
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
+
+	InputMappingContext = DefaultMappingContext;
 }

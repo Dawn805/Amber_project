@@ -8,7 +8,7 @@
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if (APlayerController* PC = Cast<APlayerController>(this))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))

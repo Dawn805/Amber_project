@@ -30,6 +30,6 @@ public:
 	static void SetStatKeyMap(TMap<int,FKey>& InKeyMap);
 
 	UFUNCTION(BlueprintCallable, Category = "KeySaveLibrary")
-	static void ResetStatKeyMap();
+	static TMap<int, FKey> ResetStatKeyMap();
 
 };

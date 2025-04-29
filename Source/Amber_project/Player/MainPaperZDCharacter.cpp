@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimInstance.h"
+#include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
 
 AMainPaperZDCharacter::AMainPaperZDCharacter()
 {
@@ -15,11 +16,22 @@ void AMainPaperZDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UKeySaveLibrary::CreateSave();
+	TMap<int,FKey> LoadedKeyMap = UKeySaveLibrary::GetStatKeyMap();
+	UInputMappingContext* NewMappingContext = NewObject<UInputMappingContext>(this);
+
+	for (int i = 0 ; i < InputMappingContext->GetMappings().Num() ; i++)
+	{
+		NewMappingContext->MapKey(InputMappingContext->GetMappings()[i].Action,LoadedKeyMap[i]);
+	}
+	
+	
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(InputMappingContext, 1);
+			Subsystem->RemoveMappingContext(InputMappingContext);
+			Subsystem->AddMappingContext(NewMappingContext, 1);
 		}
 	}
 }
@@ -38,7 +50,7 @@ void AMainPaperZDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		if (MoveRightAction)
 			EnhancedInput->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &AMainPaperZDCharacter::MoveRight);
 		if (MoveLeftAction)
-			EnhancedInput->BindAction(MoveLeftAction, ETriggerEvent::Triggered, this,&AMainPaperZDCharacter::MoveRight);
+			EnhancedInput->BindAction(MoveLeftAction, ETriggerEvent::Triggered, this,&AMainPaperZDCharacter::MoveLeft);
 		if (MoveJumpAction)
 			EnhancedInput->BindAction(MoveJumpAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Jump);
 		if (Attack_JAction)
@@ -47,6 +59,27 @@ void AMainPaperZDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 			EnhancedInput->BindAction(Attack_UAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Attack_U);
 		if (Attack_IAction)
 			EnhancedInput->BindAction(Attack_IAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Attack_I);
+	}
+}
+
+void AMainPaperZDCharacter::MoveLeft(const FInputActionInstance& Instance)
+{
+	const float Value = Instance.GetValue().Get<float>();
+	if (Value && Controller)
+	{
+		const FRotator Rotator = Controller->GetControlRotation();
+		const FVector Direction = FRotationMatrix(Rotator).GetUnitAxis(EAxis::X);
+		AddMovementInput(Direction, -Value);
+
+		UPaperFlipbookComponent* SpriteComponent = this->FindComponentByClass<UPaperFlipbookComponent>();
+		if (Value < 0.0f && SpriteComponent)
+		{
+			SpriteComponent->SetRelativeRotation(FRotator(0, 0, 0));
+		}
+		else if (Value > 0.0f && SpriteComponent)
+		{
+			SpriteComponent->SetRelativeRotation(FRotator(0, -180, 0));
+		}
 	}
 }
 

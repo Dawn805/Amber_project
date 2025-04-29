@@ -40,6 +40,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* Attack_IAction;
 
+	virtual void MoveLeft(const struct FInputActionInstance& Instance);
 	virtual void MoveRight(const struct FInputActionInstance& Instance);
 	virtual void MoveJump(const struct FInputActionInstance& Instance);
 	virtual void Attack_J(const struct FInputActionInstance& Instance);

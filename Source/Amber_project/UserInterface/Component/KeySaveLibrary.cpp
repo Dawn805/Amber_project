@@ -47,13 +47,13 @@ void UKeySaveLibrary::SetStatKeyMap(TMap<int,FKey>& InKeyMap)
 	}
 }
 
-void UKeySaveLibrary::ResetStatKeyMap()
+TMap<int, FKey> UKeySaveLibrary::ResetStatKeyMap()
 {
 	UKeySaveGame* SaveGame = GetSave();
 	if (SaveGame)
 	{
-		SaveGame->ResetKeyMap();
-		UGameplayStatics::SaveGameToSlot(SaveGame,"KeySave",0);
+		return SaveGame->ResetKeyMap();
 	}
+	return TMap<int,FKey>();
 }
 

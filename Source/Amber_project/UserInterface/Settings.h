@@ -7,6 +7,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "InputCoreTypes.h"
 #include "Components/InputKeySelector.h"
+#include "InputMappingContext.h"
 
 #include "Settings.generated.h"
 
@@ -74,5 +75,27 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RefreshKeySelectors();
 
+	TMap<int,FKey> TempKeyMap;
+	
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_MoveLeft(UInputKeySelector* Selector,FInputChord SelectedChord);
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_MoveRight(UInputKeySelector* Selector,FInputChord SelectedChord);
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_Jump(UInputKeySelector* Selector,FInputChord SelectedChord);
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_Attack_J(UInputKeySelector* Selector,FInputChord SelectedChord);
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_Attack_U(UInputKeySelector* Selector,FInputChord SelectedChord);
+	UFUNCTION(BlueprintCallable)
+	void OnKeySelected_Attack_I(UInputKeySelector* Selector,FInputChord SelectedChord);
 
+	UFUNCTION(BlueprintCallable)
+	void Button_Save_OnClicked();
+
+	UFUNCTION(BlueprintCallable)
+	void Button_Reset_OnClicked();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInputMappingContext* InputMappingContext;
 };
