@@ -8,6 +8,7 @@
 #include "InputCoreTypes.h"
 #include "Components/InputKeySelector.h"
 #include "InputMappingContext.h"
+#include "Components/Slider.h"
 
 #include "Settings.generated.h"
 
@@ -101,4 +102,28 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInputMappingContext* InputMappingContext_Controller;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
+	USoundMix* SoundMix;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_Master;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_BGM;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_Sound;
+	
+	UPROPERTY(meta=(BindWidget))
+	USlider* Slider_MasterVolume;
+	UPROPERTY(meta=(BindWidget))
+	USlider* Slider_BGMVolume;
+	UPROPERTY(meta=(BindWidget))
+	USlider* Slider_SoundVolume;
+
+	UFUNCTION(BlueprintCallable)
+	void OnSlider_MasterVolume_ValueChange(float value);
+	UFUNCTION(BlueprintCallable)
+	void OnSlider_BGMVolume_ValueChange(float value);
+	UFUNCTION(BlueprintCallable)
+	void OnSlider_SoundVolume_ValueChange(float value);
 };

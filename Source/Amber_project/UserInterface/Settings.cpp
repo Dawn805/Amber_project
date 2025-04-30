@@ -2,6 +2,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/WidgetSwitcher.h"
 #include "Amber_project/MainPlayerController.h"
+#include "Amber_project/SaveGame/VolumeSave.h"
+#include "Components/Slider.h"
 #include "Kismet/GameplayStatics.h"
 
 void USettings::NativeConstruct()
@@ -30,6 +32,18 @@ void USettings::NativeConstruct()
 		Button_Save->OnClicked.AddDynamic(this, &USettings::Button_Save_OnClicked);
 	if (Button_Reset)
 		Button_Reset->OnClicked.AddDynamic(this,&USettings::Button_Reset_OnClicked);
+
+	if (Slider_MasterVolume)
+		Slider_MasterVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_MasterVolume_ValueChange);
+	if (Slider_BGMVolume)
+		Slider_BGMVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_BGMVolume_ValueChange);
+	if (Slider_SoundVolume)
+		Slider_SoundVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_SoundVolume_ValueChange);
+
+	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
+	Slider_MasterVolume->SetValue(Settings->MasterVolumeValue);
+	Slider_BGMVolume->SetValue(Settings->BGMVolumeValue);
+	Slider_SoundVolume->SetValue(Settings->SoundVolumeValue);
 }
 
 void USettings::Button_KeysChange_OnClicked()
@@ -188,3 +202,41 @@ void USettings::Button_Reset_OnClicked()
 
 	InputMappingContext = DefaultMappingContext;
 }
+
+void USettings::OnSlider_MasterVolume_ValueChange(float value)
+{
+	if (!SoundMix || !SoundClass_Master) return;
+
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_Master,value,1,1,true);
+	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
+
+	//float MasterVol = GetDefault<UVolumeSave>()->MasterVolumeValue;
+	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
+	Settings->MasterVolumeValue = value;
+	Settings->SaveConfig();
+}
+
+void USettings::OnSlider_BGMVolume_ValueChange(float value)
+{
+	if (!SoundMix || !SoundClass_BGM) return;
+
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_BGM,value,1,1,true);
+	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
+	
+	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
+	Settings->BGMVolumeValue = value;
+	Settings->SaveConfig();
+}
+
+void USettings::OnSlider_SoundVolume_ValueChange(float value)
+{
+	if (!SoundMix || !SoundClass_Sound) return;
+
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_Sound,value,1,1,true);
+	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
+
+	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
+	Settings->SoundVolumeValue = value;
+	Settings->SaveConfig();
+}
+
