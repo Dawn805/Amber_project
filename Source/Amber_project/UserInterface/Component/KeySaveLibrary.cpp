@@ -24,7 +24,9 @@ UKeySaveGame* UKeySaveLibrary::GetSave()
 		CreateSave();
 	}
 
-	return Cast<UKeySaveGame>(UGameplayStatics::LoadGameFromSlot("KeySave",0));
+	UKeySaveGame* Save = Cast<UKeySaveGame>(UGameplayStatics::LoadGameFromSlot("KeySave",0));
+	
+	return Save;
 }
 
 TMap<int, FKey> UKeySaveLibrary::GetStatKeyMap()

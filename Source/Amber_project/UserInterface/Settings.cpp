@@ -151,8 +151,9 @@ void USettings::Button_Save_OnClicked()
 
 		if(Subsystem)
 		{
-			Subsystem->RemoveMappingContext(InputMappingContext);
-			Subsystem->AddMappingContext(NewMappingContext, 0);
+			Subsystem->ClearAllMappings();
+			Subsystem->AddMappingContext(InputMappingContext_Controller, 0);
+			Subsystem->AddMappingContext(NewMappingContext, 1);
 		}
 	}
 
@@ -178,8 +179,10 @@ void USettings::Button_Reset_OnClicked()
 
 		if(Subsystem)
 		{
-			Subsystem->RemoveMappingContext(InputMappingContext);
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			//Subsystem->RemoveMappingContext(InputMappingContext);
+			Subsystem->ClearAllMappings();
+			Subsystem->AddMappingContext(InputMappingContext_Controller, 0);
+			Subsystem->AddMappingContext(DefaultMappingContext, 1);
 		}
 	}
 

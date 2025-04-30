@@ -98,4 +98,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInputMappingContext* InputMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInputMappingContext* InputMappingContext_Controller;
 };
