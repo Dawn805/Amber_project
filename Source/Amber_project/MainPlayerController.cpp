@@ -4,6 +4,8 @@
 #include "MainPlayerController.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/VolumeSave.h"
 
 void AMainPlayerController::BeginPlay()
 {
@@ -18,6 +20,16 @@ void AMainPlayerController::BeginPlay()
 	}
 
 	InitKeySave();
+
+	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
+
+	if (Settings && SoundMix && SoundClass_Master && SoundClass_BGM && SoundClass_Sound)
+	{
+		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_Master, Settings->MasterVolumeValue, 1, 1, true);
+		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_BGM, Settings->BGMVolumeValue, 1, 1, true);
+		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_Sound, Settings->SoundVolumeValue, 1, 1, true);
+		UGameplayStatics::PushSoundMixModifier(GetWorld(), SoundMix);
+	}
 }
 
 void AMainPlayerController::SetupInputComponent()

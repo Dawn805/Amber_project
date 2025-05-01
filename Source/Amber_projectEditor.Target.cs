@@ -9,6 +9,10 @@ public class Amber_projectEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
+
+		bUseFastPDBLinking = false;
+        	bUseAdaptiveUnityBuild = false;
+
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		ExtraModuleNames.Add("Amber_project");
 	}

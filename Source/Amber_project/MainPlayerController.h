@@ -54,5 +54,14 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	void InitKeySave();
-	
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
+	USoundMix* SoundMix;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_Master;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_BGM;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
+	USoundClass* SoundClass_Sound;
 };
