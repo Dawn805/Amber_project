@@ -92,20 +92,24 @@ void ACharacter_Swordsman::Attack_J1_2()
 
 void ACharacter_Swordsman::Attack_U(const FInputActionInstance& Instance)
 {
+	if (StateComponent->MP < 8.0f) return;
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
 	if (FAnimInstance && AnimName_Attack_U != "No" && StateMachineName != "No")
 	{
 		FAnimInstance->JumpToNode(AnimName_Attack_U,StateMachineName);
+		StateComponent->MP = StateComponent->MP - 8.0f;
 	}
 }
 
 
 void ACharacter_Swordsman::Attack_I(const FInputActionInstance& Instance)
 {
+	if (StateComponent->MP < 10.0f) return;
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
 	if (FAnimInstance && AnimName_Attack_I!= "No" && StateMachineName != "No")
 	{
 		FAnimInstance->JumpToNode(AnimName_Attack_I,StateMachineName);
+		StateComponent->MP = StateComponent->MP - 10.0f;
 	}
 }
 
