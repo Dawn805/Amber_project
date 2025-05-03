@@ -56,4 +56,9 @@ public:
 	FName AnimNodeName_Jump = "No";
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FName StateMachineName = "No";
+
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float FaceDirection = 1.0f;
 };

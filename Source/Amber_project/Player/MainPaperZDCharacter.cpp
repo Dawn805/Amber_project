@@ -75,10 +75,14 @@ void AMainPaperZDCharacter::MoveLeft(const FInputActionInstance& Instance)
 		if (Value < 0.0f && SpriteComponent)
 		{
 			SpriteComponent->SetRelativeRotation(FRotator(0, 0, 0));
+
+			FaceDirection = 1.0f;
 		}
 		else if (Value > 0.0f && SpriteComponent)
 		{
 			SpriteComponent->SetRelativeRotation(FRotator(0, -180, 0));
+
+			FaceDirection = -1.0f;
 		}
 	}
 }
@@ -96,10 +100,14 @@ void AMainPaperZDCharacter::MoveRight(const FInputActionInstance& Instance)
 		if (Value > 0.0f && SpriteComponent)
 		{
 			SpriteComponent->SetRelativeRotation(FRotator(0, 0, 0));
+
+			FaceDirection = 1.0f;
 		}
 		else if (Value < 0.0f && SpriteComponent)
 		{
 			SpriteComponent->SetRelativeRotation(FRotator(0, -180, 0));
+
+			FaceDirection = -1.0f;
 		}
 	}
 }

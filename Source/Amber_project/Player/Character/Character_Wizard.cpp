@@ -59,7 +59,7 @@ void ACharacter_Wizard::Attack_U(const struct FInputActionInstance& Instance)
 	UPaperZDAnimInstance* WizardAnimInstance = this->GetAnimInstance();
 	if (WizardAnimInstance && StateMachineName != "No" && AnimName_Attack_U != "No")
 	{
-		WizardAnimInstance->JumpToNode(AnimName_Attack_J,StateMachineName);
+		WizardAnimInstance->JumpToNode(AnimName_Attack_U,StateMachineName);
 		StateComponent->MP -= 15.0f;
 	}
 }

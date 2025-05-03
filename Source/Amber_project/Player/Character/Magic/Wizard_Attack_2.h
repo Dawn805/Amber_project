@@ -7,6 +7,7 @@
 #include "PaperZDAnimationComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Wizard_Attack_2.generated.h"
 
 UCLASS()
@@ -34,4 +35,10 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UPaperZDAnimationComponent* AnimationComponent_2;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UProjectileMovementComponent* ProjectileMovementComponent_2;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float FlySpeed = 10.0f;
 };
