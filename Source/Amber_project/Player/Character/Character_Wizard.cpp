@@ -44,6 +44,7 @@ void ACharacter_Wizard::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ACharacter_Wizard::Attack_J(const struct FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
 	if (StateComponent->MP < 5.0f) return;
 	UPaperZDAnimInstance* WizardAnimInstance = this->GetAnimInstance();
 	if (WizardAnimInstance && StateMachineName != "No" && AnimName_Attack_J != "No")
@@ -55,6 +56,7 @@ void ACharacter_Wizard::Attack_J(const struct FInputActionInstance& Instance)
 
 void ACharacter_Wizard::Attack_U(const struct FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
 	if (StateComponent->MP < 15.0f) return;
 	UPaperZDAnimInstance* WizardAnimInstance = this->GetAnimInstance();
 	if (WizardAnimInstance && StateMachineName != "No" && AnimName_Attack_U != "No")
@@ -66,6 +68,7 @@ void ACharacter_Wizard::Attack_U(const struct FInputActionInstance& Instance)
 
 void ACharacter_Wizard::Attack_I(const struct FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
 	UPaperZDAnimInstance* WizardAnimInstance = this->GetAnimInstance();
 	if (WizardAnimInstance && StateMachineName != "No" && AnimName_Attack_I != "No")
 	{

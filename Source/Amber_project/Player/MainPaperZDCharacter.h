@@ -61,4 +61,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float FaceDirection = 1.0f;
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool AnimRight = true;
 };

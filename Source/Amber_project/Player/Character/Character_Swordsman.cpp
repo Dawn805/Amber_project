@@ -48,6 +48,8 @@ void ACharacter_Swordsman::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 void ACharacter_Swordsman::Attack_J(const FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
+	
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
 	if (!FAnimInstance) return;
 	if (StateMachineName == "No" || AnimName_Attack_J_1 == "No" || AnimName_Attack_J_2 == "No" || AnimName_Attack_J_3 == "No") return;
@@ -92,6 +94,8 @@ void ACharacter_Swordsman::Attack_J1_2()
 
 void ACharacter_Swordsman::Attack_U(const FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
+	
 	if (StateComponent->MP < 8.0f) return;
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
 	if (FAnimInstance && AnimName_Attack_U != "No" && StateMachineName != "No")
@@ -104,6 +108,8 @@ void ACharacter_Swordsman::Attack_U(const FInputActionInstance& Instance)
 
 void ACharacter_Swordsman::Attack_I(const FInputActionInstance& Instance)
 {
+	if (!AnimRight) return;
+	
 	if (StateComponent->MP < 10.0f) return;
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
 	if (FAnimInstance && AnimName_Attack_I!= "No" && StateMachineName != "No")
