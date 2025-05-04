@@ -40,5 +40,7 @@ public:
 	bool AnimRight = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bHurt = false;
+	float MaxPoise = 30.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Poise = 30.0f;
 };

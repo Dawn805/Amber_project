@@ -8,7 +8,7 @@ public class Amber_project : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "PaperZD", "UMG", "EnhancedInput", "InputCore", "Slate", "SlateCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "PaperZD", "UMG", "EnhancedInput", "InputCore", "Slate", "SlateCore", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -4,6 +4,7 @@
 #include "MainPaperZDEnemy.h"
 
 #include "PaperFlipbookComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -11,6 +12,8 @@ AMainPaperZDEnemy::AMainPaperZDEnemy()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	this->GetCharacterMovement()->SetPlaneConstraintNormal(FVector(0,1,0));
 }
 
 // Called when the game starts or when spawned
