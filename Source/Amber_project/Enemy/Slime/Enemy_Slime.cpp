@@ -33,8 +33,8 @@ void AEnemy_Slime::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FString Text = TEXT("当前HP：") + FString::SanitizeFloat(HP);
-	UKismetSystemLibrary::PrintString(this, Text);
+	// FString Text = TEXT("当前HP：") + FString::SanitizeFloat(HP);
+	// UKismetSystemLibrary::PrintString(this, Text);
 
 	if (Poise <= 0 && HP > 0)
 	{
