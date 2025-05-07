@@ -53,3 +53,42 @@ void AMainPaperZDEnemy::AITree_End()
 	EnemyAIController->GetBrainComponent()->StopLogic("Death");
 }
 
+FEnemySkill AMainPaperZDEnemy::ChooseSkill()
+{
+	TArray<FEnemySkill>& SkillPool = Enemy_Skills;
+	if (SkillPool.Num() == 0) return FEnemySkill();
+
+	TArray<int> Weights;
+	int TotalWeight = 0;
+
+	for (int i = 0 ; i < SkillPool.Num() ; i++)
+	{
+		int Sub_Weight;
+		if (SkillPool[i].SkillName == LastSkill)
+		{
+			Sub_Weight = SkillPool[i].Weight/2;
+		}else
+		{
+			Sub_Weight = SkillPool[i].Weight;
+		}
+
+		Weights.Add(Sub_Weight);
+		TotalWeight += Sub_Weight;
+	}
+
+	int RandomValue = FMath::RandRange(1, TotalWeight);
+	int Accumulated = 0;
+
+	for (int i = 0 ; i < SkillPool.Num() ; i++)
+	{
+		Accumulated += Weights[i];
+		if (RandomValue <= Accumulated)
+		{
+			LastSkill = SkillPool[i].SkillName;
+			return SkillPool[i];
+		}
+	}
+	
+	return SkillPool[0];
+}
+

@@ -13,12 +13,9 @@ void UNotify_Character_NoMove::OnNotifyBegin_Implementation(UPaperZDAnimInstance
 
 	AMainPaperZDCharacter* ZDCharacter = Cast<AMainPaperZDCharacter>(OwningInstance->GetPaperCharacter());
 	if (!ZDCharacter) return;
+	
+	ZDCharacter->GetCharacterMovement()->MaxWalkSpeed = BeginSpeed;
 
-	FVector Vel = ZDCharacter->GetVelocity();
-	// if (ZDCharacter->GetCharacterMovement() && Vel.Z == 0.0f)
-	// {
-		ZDCharacter->GetCharacterMovement()->MaxWalkSpeed = BeginSpeed;
-	// }
 }
 
 void UNotify_Character_NoMove::OnNotifyEnd_Implementation(UPaperZDAnimInstance* OwningInstance) const
@@ -27,10 +24,7 @@ void UNotify_Character_NoMove::OnNotifyEnd_Implementation(UPaperZDAnimInstance* 
 
 	AMainPaperZDCharacter* ZdCharacter = Cast<AMainPaperZDCharacter>(OwningInstance->GetPaperCharacter());
 	if (!ZdCharacter) return;
+	
+	ZdCharacter->GetCharacterMovement()->MaxWalkSpeed = EndSpeed;
 
-	FVector Vel = ZdCharacter->GetVelocity();
-	// if (ZdCharacter->GetCharacterMovement() && Vel.Z == 0.0f)
-	// {
-		ZdCharacter->GetCharacterMovement()->MaxWalkSpeed = EndSpeed;
-	// }
 }

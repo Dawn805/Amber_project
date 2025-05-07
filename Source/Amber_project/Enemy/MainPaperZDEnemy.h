@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Enemy_SkillComponent.h"
 #include "PaperZDCharacter.h"
 #include "MainPaperZDEnemy.generated.h"
 
@@ -49,4 +50,11 @@ public:
 	void AITree_Begin();
 	UFUNCTION(BlueprintCallable)
 	void AITree_End();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<FEnemySkill> Enemy_Skills;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName LastSkill = "No";
+	UFUNCTION(BlueprintCallable)
+	FEnemySkill ChooseSkill();
 };

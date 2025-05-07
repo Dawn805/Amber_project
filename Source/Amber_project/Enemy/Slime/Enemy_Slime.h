@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Amber_project/Enemy/Enemy_SkillComponent.h"
 #include "Amber_project/Enemy/MainPaperZDEnemy.h"
 #include "Enemy_Slime.generated.h"
 
@@ -33,4 +34,5 @@ public:
 	FName AnimNodeName_Hurt = "No";
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FName AnimNodeName_Death = "No";
+	
 };

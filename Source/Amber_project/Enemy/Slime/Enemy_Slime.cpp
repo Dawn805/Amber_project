@@ -19,6 +19,18 @@ AEnemy_Slime::AEnemy_Slime()
 	Defense = 0.0f;
 	Poise = 10.0f;
 	MaxPoise = 10.0f;
+
+	FEnemySkill Attack_01;
+	Attack_01.SkillName = "Attack_01";
+	Attack_01.MaxRange = 100.0f;
+	Attack_01.Weight = 5;
+	FEnemySkill Attack_02;
+	Attack_02.SkillName = "Attack_02";
+	Attack_02.MaxRange = 100.0f;
+	Attack_02.Weight = 5;
+
+	Enemy_Skills.Add(Attack_01);
+	Enemy_Skills.Add(Attack_02);
 }
 
 // Called when the game starts or when spawned
@@ -63,4 +75,5 @@ void AEnemy_Slime::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
 
