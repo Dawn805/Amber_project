@@ -28,8 +28,6 @@ EBTNodeResult::Type UTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& Owner
 
 	AMainPaperZDCharacter* PlayerCharacter = Cast<AMainPaperZDCharacter>(BlackboardComponent->GetValueAsObject("PlayerCharacter"));;
 	if (!PlayerCharacter) return EBTNodeResult::Failed;
-
-	UKismetSystemLibrary::PrintString(this,"111");
 	
 	AIController->MoveToActor(PlayerCharacter);
 	return EBTNodeResult::Succeeded;

@@ -43,4 +43,10 @@ public:
 	float MaxPoise = 30.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Poise = 30.0f;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void AITree_Begin();
+	UFUNCTION(BlueprintCallable)
+	void AITree_End();
 };

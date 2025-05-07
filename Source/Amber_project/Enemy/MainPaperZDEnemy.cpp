@@ -3,6 +3,8 @@
 
 #include "MainPaperZDEnemy.h"
 
+#include "AIController.h"
+#include "BrainComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -27,20 +29,27 @@ void AMainPaperZDEnemy::BeginPlay()
 void AMainPaperZDEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FVector Velocity = GetVelocity();
-	if (FMath::Abs(Velocity.X) > 0.0f)
-	{
-		float Scale = 1.0f;
-		if (Velocity.X > 0.0f) Scale = 1.0f;
-		if (Velocity.X < 0.0f) Scale = -1.0f;
-		GetSprite()->SetRelativeScale3D(FVector(Scale, 1.0f, 1.0f));
-	}
 }
 
 // Called to bind functionality to input
 void AMainPaperZDEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AMainPaperZDEnemy::AITree_Begin()
+{
+	AAIController* EnemyAIController = Cast<AAIController>(GetController());
+	if (!EnemyAIController) return;
+
+	EnemyAIController->GetBrainComponent()->RestartLogic();
+}
+
+void AMainPaperZDEnemy::AITree_End()
+{
+	AAIController* EnemyAIController = Cast<AAIController>(GetController());
+	if (!EnemyAIController) return;
+
+	EnemyAIController->GetBrainComponent()->StopLogic("Death");
 }
 
