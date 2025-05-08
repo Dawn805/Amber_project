@@ -66,23 +66,33 @@ void AMainPaperZDEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void AMainPaperZDEnemy::AITree_Begin()
 {
-	if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	// if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	// {
+	// 	if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
+	// 	{
+	// 		BTComp->StartTree(*BehaviorTreeAsset);
+	// 	}
+	// }
+	AAIController* FAIController = Cast<AAIController>(GetController());
+	if (FAIController && FAIController->GetBrainComponent())
 	{
-		if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
-		{
-			BTComp->StartTree(*BehaviorTreeAsset);
-		}
+		FAIController->GetBrainComponent()->RestartLogic();
 	}
 }
 
 void AMainPaperZDEnemy::AITree_End()
 {
-	if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	// if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	// {
+	// 	if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
+	// 	{
+	// 		BTComp->StopTree(EBTStopMode::Forced);
+	// 	}
+	// }
+	AAIController* FAIController = Cast<AAIController>(GetController());
+	if (FAIController && FAIController->GetBrainComponent())
 	{
-		if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
-		{
-			BTComp->StopTree(EBTStopMode::Forced);
-		}
+		FAIController->GetBrainComponent()->StopLogic("Died");
 	}
 }
 

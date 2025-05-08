@@ -3,7 +3,10 @@
 
 #include "MainPlayerController.h"
 
+#include "Player/MainPaperZDCharacter.h"
 #include "EnhancedInputSubsystems.h"
+#include "PaperFlipbookComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/VolumeSave.h"
 
@@ -31,6 +34,22 @@ void AMainPlayerController::BeginPlay()
 		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_Sound, Settings->SoundVolumeValue, 1, 1, true);
 		UGameplayStatics::PushSoundMixModifier(GetWorld(), SoundMix);
 	}
+
+	
+//切换角色尝试
+	FVector SpawnLoc = FVector(20, 0, 0);
+	FRotator SpawnRot = FRotator::ZeroRotator;
+
+	CharacterA = GetWorld()->SpawnActor<AMainPaperZDCharacter>(SwordsmanClass, SpawnLoc, SpawnRot);
+	CharacterB = GetWorld()->SpawnActor<AMainPaperZDCharacter>(WizardClass, SpawnLoc, SpawnRot);
+	CharacterB->SetActorHiddenInGame(true);     
+	CharacterB->SetActorEnableCollision(false); 
+	CharacterB->SetActorTickEnabled(false);     
+
+	CurrentCharacter = CharacterA;
+	AnotherCharacter = CharacterB;
+
+	Possess(CurrentCharacter);
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -42,6 +61,7 @@ void AMainPlayerController::SetupInputComponent()
 		if (OpenMenuAction)
 		{
 			EnhancedInput->BindAction(OpenMenuAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenMenu);
+			EnhancedInput->BindAction(SwitchCharacterAction,ETriggerEvent::Started,this,&AMainPlayerController::SwitchCharacter);
 		}
 	}
 }
@@ -124,3 +144,33 @@ void AMainPlayerController::InitKeySave()
 		UKeySaveLibrary::ResetStatKeyMap();
 	}
 }
+
+void AMainPlayerController::SwitchCharacter()
+{
+	if (!CurrentCharacter || !AnotherCharacter) return;
+
+	FVector LastLocation = CurrentCharacter->GetActorLocation();
+	FRotator LastRotation = CurrentCharacter->FindComponentByClass<UPaperFlipbookComponent>()->GetRelativeRotation();
+	FVector LastVelocity = CurrentCharacter->GetCharacterMovement()->Velocity;
+
+	CurrentCharacter->SetActorHiddenInGame(true);
+	CurrentCharacter->SetActorEnableCollision(false);
+	CurrentCharacter->SetActorTickEnabled(false);
+
+	AnotherCharacter->SetActorLocation(LastLocation);
+	AnotherCharacter->FindComponentByClass<UPaperFlipbookComponent>()->SetRelativeRotation(LastRotation);
+	if (LastVelocity.Size() > AnotherCharacter->GetCharacterMovement()->MaxWalkSpeed)
+	{
+		LastVelocity = LastVelocity.GetSafeNormal() * AnotherCharacter->GetCharacterMovement()->MaxWalkSpeed;
+	}
+	AnotherCharacter->GetCharacterMovement()->Velocity = LastVelocity;
+	
+	AnotherCharacter->SetActorHiddenInGame(false);
+	AnotherCharacter->SetActorEnableCollision(true);
+	AnotherCharacter->SetActorTickEnabled(true);
+
+	Possess(AnotherCharacter);
+
+	Swap(CurrentCharacter, AnotherCharacter);
+}
+

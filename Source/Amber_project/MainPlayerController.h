@@ -9,6 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "UserInterface/Settings.h"
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
+class AMainPaperZDCharacter;
 #include "MainPlayerController.generated.h"
 
 /**
@@ -30,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* OpenMenuAction;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UInputAction* SwitchCharacterAction;
+
 	UFUNCTION(BlueprintCallable)
 	void OpenMenu(const struct FInputActionInstance& Instance);
 	UFUNCTION(BlueprintCallable)
@@ -39,6 +43,9 @@ public:
 	void OpenSettings();
 	UFUNCTION(BlueprintCallable)
 	void CloseSettings();
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchCharacter();
 
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -64,4 +71,21 @@ public:
 	USoundClass* SoundClass_BGM;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
 	USoundClass* SoundClass_Sound;
+
+//更换角色
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AMainPaperZDCharacter> SwordsmanClass;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AMainPaperZDCharacter> WizardClass;
+
+	UPROPERTY()
+	AMainPaperZDCharacter* CharacterA;
+	UPROPERTY()
+	AMainPaperZDCharacter* CharacterB;
+	UPROPERTY()
+	AMainPaperZDCharacter* CurrentCharacter;
+	UPROPERTY()
+	AMainPaperZDCharacter* AnotherCharacter;
+
 };

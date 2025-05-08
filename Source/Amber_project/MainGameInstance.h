@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Backpack/BackpackComponent.h"
 #include "Engine/GameInstance.h"
 #include "MainGameInstance.generated.h"
 
@@ -18,15 +19,6 @@ public:
 	virtual void Init() override;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
-	USoundMix* SoundMix;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Master;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_BGM;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Sound;
-
-	UFUNCTION()
-	void OnPostLoadMap(UWorld* LoadedWorld);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBackpackComponent* Backpack;
 };
