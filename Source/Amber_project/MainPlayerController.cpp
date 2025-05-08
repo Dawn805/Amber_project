@@ -50,6 +50,27 @@ void AMainPlayerController::BeginPlay()
 	AnotherCharacter = CharacterB;
 
 	Possess(CurrentCharacter);
+
+	
+//给角色添加PlayerState
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		FString MapName = World->GetMapName();
+		MapName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+		if (MapName != "Map_Menu")
+		{
+			if (PlayerStateWidgetClass)
+			{
+				PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
+				if (PlayerStateWidgetInstance)
+				{
+					PlayerStateWidgetInstance->AddToViewport();
+				}
+			}
+		}
+	}
 }
 
 void AMainPlayerController::SetupInputComponent()

@@ -121,7 +121,7 @@ void AMainPaperZDCharacter::MoveJump(const struct FInputActionInstance& Instance
 void AMainPaperZDCharacter::OnJumped_Implementation()
 {
 	UPaperZDAnimInstance* FAnimInstance = this->GetAnimInstance();
-	if (FAnimInstance && AnimNodeName_Jump != "No" && StateMachineName != "No")
+	if (FAnimInstance && AnimNodeName_Jump != "No" && StateMachineName != "No" && AnimRight)
 	{
 		FAnimInstance->JumpToNode(AnimNodeName_Jump,StateMachineName);
 	}

@@ -9,6 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "UserInterface/Settings.h"
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
+#include "UserInterface/PlayerStateWidget.h"
 class AMainPaperZDCharacter;
 #include "MainPlayerController.generated.h"
 
@@ -88,4 +89,9 @@ public:
 	UPROPERTY()
 	AMainPaperZDCharacter* AnotherCharacter;
 
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UPlayerStateWidget> PlayerStateWidgetClass;
+	UPROPERTY()
+	UPlayerStateWidget* PlayerStateWidgetInstance;
 };
