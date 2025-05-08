@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperZDAnimInstance.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -29,6 +31,30 @@ void AMainPaperZDEnemy::BeginPlay()
 void AMainPaperZDEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (Poise <= 0 && HP > 0)
+	{
+		UPaperZDAnimInstance* ZDAnimInstance = this->GetAnimInstance();
+		if (ZDAnimInstance)
+		{
+			if (StateMachineName != "No" && AnimNodeName_Hurt != "No" && AnimRight)
+			{
+				ZDAnimInstance->JumpToNode(AnimNodeName_Hurt,StateMachineName);
+			}
+		}
+	}
+
+	if (HP <= 0)
+	{
+		UPaperZDAnimInstance* ZDAnimInstance = this->GetAnimInstance();
+		if (ZDAnimInstance)
+		{
+			if (StateMachineName != "No" && AnimNodeName_Death != "No" && AnimRight)
+			{
+				ZDAnimInstance->JumpToNode(AnimNodeName_Death,StateMachineName);
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -39,18 +65,24 @@ void AMainPaperZDEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void AMainPaperZDEnemy::AITree_Begin()
 {
-	AAIController* EnemyAIController = Cast<AAIController>(GetController());
-	if (!EnemyAIController) return;
-
-	EnemyAIController->GetBrainComponent()->RestartLogic();
+	if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	{
+		if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
+		{
+			BTComp->StartTree(*BehaviorTreeAsset);
+		}
+	}
 }
 
 void AMainPaperZDEnemy::AITree_End()
 {
-	AAIController* EnemyAIController = Cast<AAIController>(GetController());
-	if (!EnemyAIController) return;
-
-	EnemyAIController->GetBrainComponent()->StopLogic("Death");
+	if (AAIController* EnemyAIController = Cast<AAIController>(GetController()))
+	{
+		if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
+		{
+			BTComp->StopTree(EBTStopMode::Safe); 
+		}
+	}
 }
 
 FEnemySkill AMainPaperZDEnemy::ChooseSkill()

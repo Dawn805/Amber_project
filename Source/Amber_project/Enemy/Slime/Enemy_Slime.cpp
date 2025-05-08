@@ -44,30 +44,6 @@ void AEnemy_Slime::BeginPlay()
 void AEnemy_Slime::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (Poise <= 0 && HP > 0)
-	{
-		UPaperZDAnimInstance* ZDAnimInstance = this->GetAnimInstance();
-		if (ZDAnimInstance)
-		{
-			if (StateMachineName != "No" && AnimNodeName_Hurt != "No" && AnimRight)
-			{
-				ZDAnimInstance->JumpToNode(AnimNodeName_Hurt,StateMachineName);
-			}
-		}
-	}
-
-	if (HP <= 0)
-	{
-		UPaperZDAnimInstance* ZDAnimInstance = this->GetAnimInstance();
-		if (ZDAnimInstance)
-		{
-			if (StateMachineName != "No" && AnimNodeName_Death != "No" && AnimRight)
-			{
-				ZDAnimInstance->JumpToNode(AnimNodeName_Death,StateMachineName);
-			}
-		}
-	}
 }
 
 // Called to bind functionality to input

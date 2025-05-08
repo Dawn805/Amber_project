@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Enemy_SkillComponent.h"
 #include "PaperZDCharacter.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "MainPaperZDEnemy.generated.h"
 
 UCLASS()
@@ -46,6 +47,16 @@ public:
 	float Poise = 30.0f;
 
 public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName StateMachineName = "No";
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName AnimNodeName_Hurt = "No";
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName AnimNodeName_Death = "No";
+	
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UBehaviorTree* BehaviorTreeAsset;
 	UFUNCTION(BlueprintCallable)
 	void AITree_Begin();
 	UFUNCTION(BlueprintCallable)

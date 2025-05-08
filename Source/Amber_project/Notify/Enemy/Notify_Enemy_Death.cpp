@@ -12,7 +12,7 @@ void UNotify_Enemy_Death::OnReceiveNotify_Implementation(UPaperZDAnimInstance* O
 
 	AMainPaperZDEnemy* Enemy = Cast<AMainPaperZDEnemy>(OwningInstance->GetPaperCharacter());
 	if (!Enemy) return;
-
+	
 	Enemy->AITree_End();
 
 	Enemy->SetActorTickEnabled(false);

@@ -26,13 +26,5 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FName StateMachineName = "No";
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FName AnimNodeName_Hurt = "No";
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FName AnimNodeName_Death = "No";
 	
 };
