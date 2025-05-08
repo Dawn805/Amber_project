@@ -8,6 +8,7 @@
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimInstance.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -80,7 +81,7 @@ void AMainPaperZDEnemy::AITree_End()
 	{
 		if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(EnemyAIController->BrainComponent))
 		{
-			BTComp->StopTree(EBTStopMode::Safe); 
+			BTComp->StopTree(EBTStopMode::Forced);
 		}
 	}
 }
