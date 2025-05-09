@@ -58,18 +58,15 @@ void AMainPlayerController::BeginPlay()
 	{
 		FString MapName = World->GetMapName();
 		MapName.RemoveFromStart(World->StreamingLevelsPrefix);
-
-		if (MapName != "Map_Menu")
+		if (PlayerStateWidgetClass)
 		{
-			if (PlayerStateWidgetClass)
+			PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
+			if (PlayerStateWidgetInstance)
 			{
-				PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
-				if (PlayerStateWidgetInstance)
-				{
-					PlayerStateWidgetInstance->AddToViewport();
-				}
+				PlayerStateWidgetInstance->AddToViewport();
 			}
 		}
+		
 	}
 }
 
