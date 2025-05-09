@@ -11,7 +11,13 @@ ACharacter_Wizard::ACharacter_Wizard()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+}
 
+// Called when the game starts or when spawned
+void ACharacter_Wizard::BeginPlay()
+{
+	Super::BeginPlay();
+	
 	if (StateComponent)
 	{
 		StateComponent->HP_Max = 80.0f;
@@ -21,13 +27,6 @@ ACharacter_Wizard::ACharacter_Wizard()
 		StateComponent->Damage = 15.0f;
 		StateComponent->Defense = 3.0f;
 	}
-}
-
-// Called when the game starts or when spawned
-void ACharacter_Wizard::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 // Called every frame

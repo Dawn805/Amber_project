@@ -63,6 +63,7 @@ void AMainPlayerController::BeginPlay()
 			PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
 			if (PlayerStateWidgetInstance)
 			{
+				PlayerStateWidgetInstance->PlayerController = this;
 				PlayerStateWidgetInstance->AddToViewport();
 			}
 		}

@@ -13,6 +13,14 @@ ACharacter_Swordsman::ACharacter_Swordsman()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	J_Keys.Init(false,2);
+}
+
+// Called when the game starts or when spawned
+void ACharacter_Swordsman::BeginPlay()
+{
+	Super::BeginPlay();
+
 	if (StateComponent)
 	{
 		StateComponent->HP_Max = 100.0f;
@@ -22,21 +30,15 @@ ACharacter_Swordsman::ACharacter_Swordsman()
 		StateComponent->Damage = 10.0f;
 		StateComponent->Defense = 5.0f;
 	}
-	
-	J_Keys.Init(false,2);
-}
-
-// Called when the game starts or when spawned
-void ACharacter_Swordsman::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ACharacter_Swordsman::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("初始化后MP: %.2f"), StateComponent->MP));
+
 }
 
 // Called to bind functionality to input

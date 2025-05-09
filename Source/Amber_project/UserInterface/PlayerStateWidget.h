@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Amber_project/MainPlayerController.h"
+class AMainPlayerController;
 #include "Amber_project/Player/MainPaperZDCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ProgressBar.h"
