@@ -5,22 +5,24 @@
 
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "SaveGame/MainGameUserSettings.h"
 #include "SaveGame/VolumeSave.h"
 
 void UMainGameInstance::Init()
 {
 	Super::Init();
 
-	FIntPoint NewResolution = FIntPoint(1920, 1080);
-	EWindowMode::Type WindowMode = EWindowMode::WindowedFullscreen;
+	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (Settings)
+	{
+		FWindowsSettings WSettings = Settings->GetWindowsSettings();
 
-	GEngine->GameUserSettings->SetScreenResolution(NewResolution);
-	GEngine->GameUserSettings->SetFullscreenMode(WindowMode);
-
-	GEngine->SetMaxFPS(60);
-
-	GEngine->GameUserSettings->SetVSyncEnabled(true);
-
-	GEngine->GameUserSettings->ApplySettings(false);
+		Settings->SetFullscreenMode(static_cast<EWindowMode::Type>(WSettings.WindowMode));
+		Settings->SetFrameRateLimit(WSettings.WindowFPS);
+		Settings->SetScreenResolution(WSettings.WindowSize);
+		Settings->SetVSyncEnabled(WSettings.WindowSync);
+		
+		Settings->ApplySettings(false);
+	}
 }
 

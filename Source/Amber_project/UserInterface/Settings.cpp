@@ -2,6 +2,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/WidgetSwitcher.h"
 #include "Amber_project/MainPlayerController.h"
+#include "Amber_project/SaveGame/MainGameUserSettings.h"
 #include "Amber_project/SaveGame/VolumeSave.h"
 #include "Components/Slider.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,6 +17,8 @@ void USettings::NativeConstruct()
 		Button_Sound->OnClicked.AddDynamic(this, &USettings::Button_Sound_OnClicked);
 	if (Button_ComeBack)
 		Button_ComeBack->OnClicked.AddDynamic(this, &USettings::Button_Come_Back_OnClicked);
+	if (Button_Window)
+		Button_Window->OnClicked.AddDynamic(this, &USettings::Button_Window_OnClicked);
 
 	SelectorToKeyID.Add(InputKeySelector_MoveLeft, 0);
 	SelectorToKeyID.Add(InputKeySelector_MoveRight, 1);
@@ -44,6 +47,29 @@ void USettings::NativeConstruct()
 	Slider_MasterVolume->SetValue(Settings->MasterVolumeValue);
 	Slider_BGMVolume->SetValue(Settings->BGMVolumeValue);
 	Slider_SoundVolume->SetValue(Settings->SoundVolumeValue);
+
+
+	//窗口设置
+	WindowMode->AddOption(TEXT("全屏"));
+	WindowMode->AddOption(TEXT("无边框窗口"));
+	WindowMode->AddOption(TEXT("窗口"));
+
+	WindowFPS->AddOption("30");
+	WindowFPS->AddOption("60");
+	WindowFPS->AddOption("120");
+
+	WindowSize->AddOption("480x320");
+	WindowSize->AddOption("1024x720");
+	WindowSize->AddOption("1920x1080");
+
+	WindowSync->AddOption(TEXT("是"));
+	WindowSync->AddOption(TEXT("否"));
+
+	WindowMode->OnSelectionChanged.AddDynamic(this,&USettings::WindowMode_SelectionChanged);
+	WindowFPS->OnSelectionChanged.AddDynamic(this,&USettings::WindowFPS_SelectionChanged);
+	WindowSize->OnSelectionChanged.AddDynamic(this,&USettings::WindowSize_SelectionChanged);
+	WindowSync->OnSelectionChanged.AddDynamic(this,&USettings::WindowSync_SelectionChanged);
+	
 }
 
 void USettings::Button_KeysChange_OnClicked()
@@ -54,6 +80,11 @@ void USettings::Button_KeysChange_OnClicked()
 void USettings::Button_Sound_OnClicked()
 {
 	ShowWitchPanel(Panel_Sound);
+}
+
+void USettings::Button_Window_OnClicked()
+{
+	ShowWitchPanel(Panel_Window);
 }
 
 void USettings::Button_Come_Back_OnClicked()
@@ -239,4 +270,84 @@ void USettings::OnSlider_SoundVolume_ValueChange(float value)
 	Settings->SoundVolumeValue = value;
 	Settings->SaveConfig();
 }
+
+
+//窗口设置
+void USettings::WindowMode_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	int Mode = 1;
+	if (SelectedItem == TEXT("全屏"))
+		Mode = 0;
+	if (SelectedItem == TEXT("无边框窗口"))
+		Mode = 1;
+	if (SelectedItem == TEXT("窗口"))
+		Mode = 2;
+
+	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (Settings)
+	{
+		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
+		NewSettings.WindowMode = Mode;
+		Settings->UpdateWindowSettings(NewSettings);
+	}
+}
+
+void USettings::WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	int FPS = 30;
+	if (SelectedItem == "30")
+		FPS = 30;
+	if (SelectedItem == "60")
+		FPS = 60;
+	if (SelectedItem == "120")
+		FPS = 120;
+
+	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (Settings)
+	{
+		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
+		NewSettings.WindowFPS = FPS;
+		Settings->UpdateWindowSettings(NewSettings);
+	}
+}
+
+void USettings::WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	FIntPoint Size = FIntPoint(1024,720);
+	if (SelectedItem == "480x320")
+		Size = FIntPoint(480,320);
+	if (SelectedItem == "1024x720")
+		Size = FIntPoint(1024,720);
+	if (SelectedItem == "1920x1080")
+		Size = FIntPoint(1920,1080);
+
+	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (Settings)
+	{
+		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
+		NewSettings.WindowSize = Size;
+		Settings->UpdateWindowSettings(NewSettings);
+	}
+}
+
+void USettings::WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+{
+	bool Sync = true;
+	if (SelectedItem == TEXT("是"))
+		Sync = true;
+	if (SelectedItem == TEXT("否"))
+		Sync = false;
+
+	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (Settings)
+	{
+		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
+		NewSettings.WindowSync = Sync;
+		Settings->UpdateWindowSettings(NewSettings);
+	}
+}
+
+
+
+
 

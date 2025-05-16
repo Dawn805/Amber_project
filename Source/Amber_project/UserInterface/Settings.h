@@ -8,6 +8,8 @@
 #include "InputCoreTypes.h"
 #include "Components/InputKeySelector.h"
 #include "InputMappingContext.h"
+#include "Components/ComboBox.h"
+#include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 
 #include "Settings.generated.h"
@@ -18,6 +20,7 @@ class AMBER_PROJECT_API USettings : public UUserWidget
 	GENERATED_BODY()
 
 protected:
+	UFUNCTION()
 	virtual void NativeConstruct() override;
 
 public:
@@ -27,6 +30,8 @@ public:
 	UButton* Button_Sound;
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_ComeBack;
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Window;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -35,6 +40,8 @@ public:
 	void Button_Sound_OnClicked();
 	UFUNCTION(BlueprintCallable)
 	void Button_Come_Back_OnClicked();
+	UFUNCTION(BlueprintCallable)
+	void Button_Window_OnClicked();
 
 public:
 	UPROPERTY(meta = (BindWidget))
@@ -43,6 +50,8 @@ public:
 	TObjectPtr<UCanvasPanel> Panel_KeysChange;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCanvasPanel> Panel_Sound;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCanvasPanel> Panel_Window;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -126,4 +135,26 @@ public:
 	void OnSlider_BGMVolume_ValueChange(float value);
 	UFUNCTION(BlueprintCallable)
 	void OnSlider_SoundVolume_ValueChange(float value);
+
+
+
+//窗口设置
+public:
+	UPROPERTY(meta=(BindWidget))
+	UComboBoxString* WindowMode;
+	UPROPERTY(meta=(BindWidget))
+	UComboBoxString* WindowFPS;
+	UPROPERTY(meta=(BindWidget))
+	UComboBoxString* WindowSize;
+	UPROPERTY(meta=(BindWidget))
+	UComboBoxString* WindowSync;
+
+	UFUNCTION(BlueprintCallable)
+	void WindowMode_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	UFUNCTION(BlueprintCallable)
+	void WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	UFUNCTION(BlueprintCallable)
+	void WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	UFUNCTION(BlueprintCallable)
+	void WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 };
