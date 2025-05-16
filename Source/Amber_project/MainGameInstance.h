@@ -17,8 +17,4 @@ class AMBER_PROJECT_API UMainGameInstance : public UGameInstance
 
 public:
 	virtual void Init() override;
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UBackpackComponent* Backpack;
 };
