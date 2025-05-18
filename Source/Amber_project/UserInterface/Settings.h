@@ -22,6 +22,7 @@ class AMBER_PROJECT_API USettings : public UUserWidget
 protected:
 	UFUNCTION()
 	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 
 public:
 	UPROPERTY(meta = (BindWidget))
@@ -157,4 +158,13 @@ public:
 	void WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 	UFUNCTION(BlueprintCallable)
 	void WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	UWidget* OnWindowModeContext(FString Item);
+	UFUNCTION()
+	UWidget* OnWindowFPSContext(FString Item);
+	UFUNCTION()
+	UWidget* OnWindowSizeContext(FString Item);
+	UFUNCTION()
+	UWidget* OnWindowSyncContext(FString Item);
 };

@@ -4,7 +4,9 @@
 #include "Amber_project/MainPlayerController.h"
 #include "Amber_project/SaveGame/MainGameUserSettings.h"
 #include "Amber_project/SaveGame/VolumeSave.h"
+#include "Blueprint/WidgetTree.h"
 #include "Components/Slider.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void USettings::NativeConstruct()
@@ -50,27 +52,70 @@ void USettings::NativeConstruct()
 
 
 	//窗口设置
-	WindowMode->AddOption(TEXT("全屏"));
-	WindowMode->AddOption(TEXT("无边框窗口"));
-	WindowMode->AddOption(TEXT("窗口"));
+	WindowMode->AddOption("Option.WindowMode.Fullscreen");
+	WindowMode->AddOption("Option.WindowMode.Borderless");
+	WindowMode->AddOption("Option.WindowMode.Windowed");
 
-	WindowFPS->AddOption("30");
-	WindowFPS->AddOption("60");
-	WindowFPS->AddOption("120");
+	WindowFPS->AddOption("Option.WindowFPS.120");
+	WindowFPS->AddOption("Option.WindowFPS.60");
+	WindowFPS->AddOption("Option.WindowFPS.30");
 
-	WindowSize->AddOption("480x320");
-	WindowSize->AddOption("1024x720");
-	WindowSize->AddOption("1920x1080");
+	WindowSize->AddOption("Option.WindowSize.1920x1080");
+	WindowSize->AddOption("Option.WindowSize.1600x900");
+	WindowSize->AddOption("Option.WindowSize.1280x720");
 
-	WindowSync->AddOption(TEXT("是"));
-	WindowSync->AddOption(TEXT("否"));
+	WindowSync->AddOption("Option.WindowVSync.On");
+	WindowSync->AddOption("Option.WindowVSync.Off");
 
 	WindowMode->OnSelectionChanged.AddDynamic(this,&USettings::WindowMode_SelectionChanged);
 	WindowFPS->OnSelectionChanged.AddDynamic(this,&USettings::WindowFPS_SelectionChanged);
 	WindowSize->OnSelectionChanged.AddDynamic(this,&USettings::WindowSize_SelectionChanged);
 	WindowSync->OnSelectionChanged.AddDynamic(this,&USettings::WindowSync_SelectionChanged);
-	
+
+
+	//初始化窗口设置
+	UMainGameUserSettings* WSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (WSettings)
+	{
+		EWindowMode::Type Mode = WSettings->GetFullscreenMode();
+		if (Mode == EWindowMode::Fullscreen)
+			WindowMode->SetSelectedOption("Option.WindowMode.Fullscreen");
+		if (Mode == EWindowMode::WindowedFullscreen)
+			WindowMode->SetSelectedOption("Option.WindowMode.Borderless");
+		if (Mode == EWindowMode::Windowed)
+			WindowMode->SetSelectedOption("Option.WindowMode.Windowed");
+
+		int FPS = WSettings->GetWindowsSettings().WindowFPS;
+		if (FPS == 120)
+			WindowFPS->SetSelectedOption("Option.WindowFPS.120");
+		if (FPS == 60)
+			WindowFPS->SetSelectedOption("Option.WindowFPS.60");
+		if (FPS == 30)
+			WindowFPS->SetSelectedOption("Option.WindowFPS.30");
+
+		FIntPoint Size = WSettings->GetScreenResolution();
+		if (Size == FIntPoint(1920, 1080))
+			WindowSize->SetSelectedOption("Option.WindowSize.1920x1080");
+		if (Size == FIntPoint(1600, 900))
+			WindowSize->SetSelectedOption("Option.WindowSize.1600x900");
+		if (Size == FIntPoint(1280, 720))
+			WindowSize->SetSelectedOption("Option.WindowSize.1280x720");
+
+		if (WSettings->IsVSyncEnabled())
+			WindowSync->SetSelectedOption("Option.WindowVSync.On");
+		else
+			WindowSync->SetSelectedOption("Option.WindowVSync.Off");
+	}
 }
+
+void USettings::NativeOnInitialized()
+{
+	WindowMode->OnGenerateWidgetEvent.BindDynamic(this,&USettings::OnWindowModeContext);
+	WindowFPS->OnGenerateWidgetEvent.BindDynamic(this,&USettings::OnWindowFPSContext);
+	WindowSize->OnGenerateWidgetEvent.BindDynamic(this,&USettings::OnWindowSizeContext);
+	WindowSync->OnGenerateWidgetEvent.BindDynamic(this,&USettings::OnWindowSyncContext);
+}
+
 
 void USettings::Button_KeysChange_OnClicked()
 {
@@ -273,14 +318,45 @@ void USettings::OnSlider_SoundVolume_ValueChange(float value)
 
 
 //窗口设置
+UWidget* USettings::OnWindowModeContext(FString Item)
+{
+	UTextBlock* TextWidget = this->WidgetTree->ConstructWidget<UTextBlock>();
+	TextWidget->SetText(FText::FromStringTable("/Game/Text/Misc", Item));
+	return TextWidget;
+}
+
+UWidget* USettings::OnWindowFPSContext(FString Item)
+{
+	UTextBlock* TextWidget = this->WidgetTree->ConstructWidget<UTextBlock>();
+	TextWidget->SetText(FText::FromStringTable("/Game/Text/Misc", Item));
+	return TextWidget;
+}
+
+UWidget* USettings::OnWindowSizeContext(FString Item)
+{
+	UTextBlock* TextWidget = this->WidgetTree->ConstructWidget<UTextBlock>();
+	TextWidget->SetText(FText::FromStringTable("/Game/Text/Misc", Item));
+	return TextWidget;
+}
+
+UWidget* USettings::OnWindowSyncContext(FString Item)
+{
+	UTextBlock* TextWidget = this->WidgetTree->ConstructWidget<UTextBlock>();
+	TextWidget->SetText(FText::FromStringTable("/Game/Text/Misc", Item));
+	return TextWidget;
+}
+
+
+
+
 void USettings::WindowMode_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
 	int Mode = 1;
-	if (SelectedItem == TEXT("全屏"))
+	if (SelectedItem == "Option.WindowMode.Fullscreen")
 		Mode = 0;
-	if (SelectedItem == TEXT("无边框窗口"))
+	if (SelectedItem == "Option.WindowMode.Borderless")
 		Mode = 1;
-	if (SelectedItem == TEXT("窗口"))
+	if (SelectedItem == "Option.WindowMode.Windowed") 
 		Mode = 2;
 
 	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
@@ -294,12 +370,12 @@ void USettings::WindowMode_SelectionChanged(FString SelectedItem, ESelectInfo::T
 
 void USettings::WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
-	int FPS = 30;
-	if (SelectedItem == "30")
+	int FPS = 60;
+	if (SelectedItem == "Option.WindowFPS.30")
 		FPS = 30;
-	if (SelectedItem == "60")
+	if (SelectedItem == "Option.WindowFPS.60")
 		FPS = 60;
-	if (SelectedItem == "120")
+	if (SelectedItem == "Option.WindowFPS.120")
 		FPS = 120;
 
 	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
@@ -313,13 +389,13 @@ void USettings::WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Ty
 
 void USettings::WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
-	FIntPoint Size = FIntPoint(1024,720);
-	if (SelectedItem == "480x320")
-		Size = FIntPoint(480,320);
-	if (SelectedItem == "1024x720")
-		Size = FIntPoint(1024,720);
-	if (SelectedItem == "1920x1080")
-		Size = FIntPoint(1920,1080);
+	FIntPoint Size = FIntPoint(1600,900);
+	if (SelectedItem == "Option.WindowSize.1920x1080")
+		Size = FIntPoint(1920, 1080);
+	if (SelectedItem == "Option.WindowSize.1600x900")
+		Size = FIntPoint(1600, 900);
+	if (SelectedItem == "Option.WindowSize.1280x720")
+		Size = FIntPoint(1280, 720);
 
 	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
 	if (Settings)
@@ -333,9 +409,9 @@ void USettings::WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::T
 void USettings::WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
 	bool Sync = true;
-	if (SelectedItem == TEXT("是"))
+	if (SelectedItem == "Option.WindowVSync.On")
 		Sync = true;
-	if (SelectedItem == TEXT("否"))
+	if (SelectedItem == "Option.WindowVSync.Off") 
 		Sync = false;
 
 	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
