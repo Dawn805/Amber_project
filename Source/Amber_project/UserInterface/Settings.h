@@ -11,6 +11,7 @@
 #include "Components/ComboBox.h"
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
+#include "Messaging/ConfirmDialogWidget.h"
 
 #include "Settings.generated.h"
 
@@ -167,4 +168,19 @@ public:
 	UWidget* OnWindowSizeContext(FString Item);
 	UFUNCTION()
 	UWidget* OnWindowSyncContext(FString Item);
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Apply;
+	UFUNCTION(BlueprintCallable)
+	void Button_Apply_OnClicked();
+	UFUNCTION(BlueprintCallable)
+	void ApplySettings();
+	UFUNCTION(BlueprintCallable)
+	void RollbackSettings();
+	
+
+	//弹窗设置
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UConfirmDialogWidget> ConfrimDialogClass;
 };

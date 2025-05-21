@@ -106,6 +106,11 @@ void USettings::NativeConstruct()
 		else
 			WindowSync->SetSelectedOption("Option.WindowVSync.Off");
 	}
+
+
+	//弹窗设置
+	if (Button_Apply)
+		Button_Apply->OnClicked.AddDynamic(this,&USettings::Button_Apply_OnClicked);
 }
 
 void USettings::NativeOnInitialized()
@@ -424,6 +429,27 @@ void USettings::WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::T
 }
 
 
+//弹窗设置
+void USettings::Button_Apply_OnClicked()
+{
+	UConfirmDialogWidget* Dialog = CreateWidget<UConfirmDialogWidget>(GetWorld(),ConfrimDialogClass);
+	if (Dialog && ConfrimDialogClass)
+	{
+		Dialog->AddToViewport();
+		Dialog->Init(
+			this,
+			FSimpleDelegate::CreateUObject(this, &USettings::ApplySettings),
+			FSimpleDelegate::CreateUObject(this, &USettings::RollbackSettings),
+			10.0f);
+	}
+}
 
+void USettings::ApplySettings()
+{
+	
+}
 
-
+void USettings::RollbackSettings()
+{
+	
+}
