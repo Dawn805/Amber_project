@@ -3,7 +3,6 @@
 #include "Components/WidgetSwitcher.h"
 #include "Amber_project/MainPlayerController.h"
 #include "Amber_project/SaveGame/MainGameUserSettings.h"
-#include "Amber_project/SaveGame/VolumeSave.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
@@ -38,17 +37,28 @@ void USettings::NativeConstruct()
 	if (Button_Reset)
 		Button_Reset->OnClicked.AddDynamic(this,&USettings::Button_Reset_OnClicked);
 
+
+
+	UMainGameUserSettings* WSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+
+	//音频设置
 	if (Slider_MasterVolume)
 		Slider_MasterVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_MasterVolume_ValueChange);
 	if (Slider_BGMVolume)
 		Slider_BGMVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_BGMVolume_ValueChange);
 	if (Slider_SoundVolume)
 		Slider_SoundVolume->OnValueChanged.AddDynamic(this,&USettings::OnSlider_SoundVolume_ValueChange);
+	
+	if (WSettings)
+	{
+		VolumeSettings.MasterVolume = WSettings->GetVolumeSettings().MasterVolume;
+		VolumeSettings.BGMVolume = WSettings->GetVolumeSettings().BGMVolume;
+		VolumeSettings.SoundVolume = WSettings->GetVolumeSettings().SoundVolume;
 
-	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
-	Slider_MasterVolume->SetValue(Settings->MasterVolumeValue);
-	Slider_BGMVolume->SetValue(Settings->BGMVolumeValue);
-	Slider_SoundVolume->SetValue(Settings->SoundVolumeValue);
+		Slider_MasterVolume->SetValue(VolumeSettings.MasterVolume);
+		Slider_BGMVolume->SetValue(VolumeSettings.BGMVolume);
+		Slider_SoundVolume->SetValue(VolumeSettings.SoundVolume);
+	}
 
 
 	//窗口设置
@@ -74,7 +84,7 @@ void USettings::NativeConstruct()
 
 
 	//初始化窗口设置
-	UMainGameUserSettings* WSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	//UMainGameUserSettings* WSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
 	if (WSettings)
 	{
 		EWindowMode::Type Mode = WSettings->GetFullscreenMode();
@@ -105,6 +115,16 @@ void USettings::NativeConstruct()
 			WindowSync->SetSelectedOption("Option.WindowVSync.On");
 		else
 			WindowSync->SetSelectedOption("Option.WindowVSync.Off");
+
+		OldSettings.WindowMode = Mode;
+		OldSettings.WindowFPS = FPS;
+		OldSettings.WindowSize = Size;
+		OldSettings.WindowSync = WSettings->IsVSyncEnabled();
+
+		NewSettings.WindowMode = Mode;
+		NewSettings.WindowFPS = FPS;
+		NewSettings.WindowSize = Size;
+		NewSettings.WindowSync = WSettings->IsVSyncEnabled();
 	}
 
 
@@ -284,41 +304,49 @@ void USettings::Button_Reset_OnClicked()
 	InputMappingContext = DefaultMappingContext;
 }
 
+
+
+//音频设置
 void USettings::OnSlider_MasterVolume_ValueChange(float value)
 {
-	if (!SoundMix || !SoundClass_Master) return;
-
-	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_Master,value,1,1,true);
-	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
-
-	//float MasterVol = GetDefault<UVolumeSave>()->MasterVolumeValue;
-	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
-	Settings->MasterVolumeValue = value;
-	Settings->SaveConfig();
+	VolumeSettings.MasterVolume = value;
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->VolumeSettings.MasterVolume = value;
+		UserSettings->SaveSettings();
+		
+		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_Master,value,1,0,true);
+		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+	}
 }
 
 void USettings::OnSlider_BGMVolume_ValueChange(float value)
 {
-	if (!SoundMix || !SoundClass_BGM) return;
+	VolumeSettings.BGMVolume = value;
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->VolumeSettings.BGMVolume = value;
+		UserSettings->SaveSettings();
 
-	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_BGM,value,1,1,true);
-	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
-	
-	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
-	Settings->BGMVolumeValue = value;
-	Settings->SaveConfig();
+		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_BGM,value,1,0,true);
+		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+	}
 }
 
 void USettings::OnSlider_SoundVolume_ValueChange(float value)
 {
-	if (!SoundMix || !SoundClass_Sound) return;
-
-	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SoundMix,SoundClass_Sound,value,1,1,true);
-	UGameplayStatics::PushSoundMixModifier(GetWorld(),SoundMix);
-
-	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
-	Settings->SoundVolumeValue = value;
-	Settings->SaveConfig();
+	VolumeSettings.SoundVolume = value;
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->VolumeSettings.SoundVolume = value;
+		UserSettings->SaveSettings();
+		
+		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_Sound,value,1,0,true);
+		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+	}
 }
 
 
@@ -364,13 +392,7 @@ void USettings::WindowMode_SelectionChanged(FString SelectedItem, ESelectInfo::T
 	if (SelectedItem == "Option.WindowMode.Windowed") 
 		Mode = 2;
 
-	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	if (Settings)
-	{
-		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
-		NewSettings.WindowMode = Mode;
-		Settings->UpdateWindowSettings(NewSettings);
-	}
+	NewSettings.WindowMode = Mode;
 }
 
 void USettings::WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
@@ -383,13 +405,7 @@ void USettings::WindowFPS_SelectionChanged(FString SelectedItem, ESelectInfo::Ty
 	if (SelectedItem == "Option.WindowFPS.120")
 		FPS = 120;
 
-	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	if (Settings)
-	{
-		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
-		NewSettings.WindowFPS = FPS;
-		Settings->UpdateWindowSettings(NewSettings);
-	}
+	NewSettings.WindowFPS = FPS;
 }
 
 void USettings::WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
@@ -402,13 +418,7 @@ void USettings::WindowSize_SelectionChanged(FString SelectedItem, ESelectInfo::T
 	if (SelectedItem == "Option.WindowSize.1280x720")
 		Size = FIntPoint(1280, 720);
 
-	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	if (Settings)
-	{
-		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
-		NewSettings.WindowSize = Size;
-		Settings->UpdateWindowSettings(NewSettings);
-	}
+	NewSettings.WindowSize = Size;
 }
 
 void USettings::WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
@@ -419,13 +429,7 @@ void USettings::WindowSync_SelectionChanged(FString SelectedItem, ESelectInfo::T
 	if (SelectedItem == "Option.WindowVSync.Off") 
 		Sync = false;
 
-	UMainGameUserSettings* Settings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	if (Settings)
-	{
-		FWindowsSettings NewSettings = Settings->GetWindowsSettings();
-		NewSettings.WindowSync = Sync;
-		Settings->UpdateWindowSettings(NewSettings);
-	}
+	NewSettings.WindowSync = Sync;
 }
 
 
@@ -442,14 +446,55 @@ void USettings::Button_Apply_OnClicked()
 			FSimpleDelegate::CreateUObject(this, &USettings::RollbackSettings),
 			10.0f);
 	}
+
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->UpdateWindowSettings(NewSettings);
+	}
 }
 
 void USettings::ApplySettings()
 {
-	
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->UpdateWindowSettings(NewSettings);
+	}
+	OldSettings = NewSettings;
 }
 
 void USettings::RollbackSettings()
 {
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	if (UserSettings)
+	{
+		UserSettings->UpdateWindowSettings(OldSettings);
+	}
 	
+	if (OldSettings.WindowMode == EWindowMode::Fullscreen)
+		WindowMode->SetSelectedOption("Option.WindowMode.Fullscreen");
+	if (OldSettings.WindowMode == EWindowMode::WindowedFullscreen)
+		WindowMode->SetSelectedOption("Option.WindowMode.Borderless");
+	if (OldSettings.WindowMode == EWindowMode::Windowed)
+		WindowMode->SetSelectedOption("Option.WindowMode.Windowed");
+	
+	if (OldSettings.WindowFPS == 120)
+		WindowFPS->SetSelectedOption("Option.WindowFPS.120");
+	if (OldSettings.WindowFPS == 60)
+		WindowFPS->SetSelectedOption("Option.WindowFPS.60");
+	if (OldSettings.WindowFPS == 30)
+		WindowFPS->SetSelectedOption("Option.WindowFPS.30");
+	
+	if (OldSettings.WindowSize == FIntPoint(1920, 1080))
+		WindowSize->SetSelectedOption("Option.WindowSize.1920x1080");
+	if (OldSettings.WindowSize == FIntPoint(1600, 900))
+		WindowSize->SetSelectedOption("Option.WindowSize.1600x900");
+	if (OldSettings.WindowSize == FIntPoint(1280, 720))
+		WindowSize->SetSelectedOption("Option.WindowSize.1280x720");
+
+	if (OldSettings.WindowSync == true)
+		WindowSync->SetSelectedOption("Option.WindowVSync.On");
+	else
+		WindowSync->SetSelectedOption("Option.WindowVSync.Off");
 }

@@ -4,11 +4,39 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameUserSettings.h"
+
+#include "Sound/SoundMix.h"
+#include "Sound/SoundClass.h"
+
 #include "MainGameUserSettings.generated.h"
 
 /**
  * 
  */
+USTRUCT(BlueprintType)
+struct FVolumeSettings
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(VisibleAnywhere,Config)
+	float MasterVolume = 1.0f;
+	UPROPERTY(VisibleAnywhere,Config)
+	float BGMVolume = 1.0f;
+	UPROPERTY(VisibleAnywhere,Config)
+	float SoundVolume = 1.0f;
+
+	friend bool operator==(const FVolumeSettings& lhs,const FVolumeSettings& rhs)
+	{
+		return lhs.MasterVolume == rhs.MasterVolume && lhs.BGMVolume == rhs.BGMVolume && lhs.SoundVolume == rhs.SoundVolume;
+	}
+
+	friend bool operator!=(const FVolumeSettings& lhs,const FVolumeSettings& rhs)
+	{
+		return !(lhs == rhs);
+	}
+};
+
 USTRUCT(BlueprintType)
 struct FWindowsSettings
 {
@@ -51,6 +79,7 @@ class AMBER_PROJECT_API UMainGameUserSettings : public UGameUserSettings
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite)
     FWindowsSettings WindowsSettings;
 
@@ -59,4 +88,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateWindowSettings(FWindowsSettings& NewSettings);
+	
+	UPROPERTY(Config, EditAnywhere, BlueprintReadWrite)
+	FVolumeSettings VolumeSettings;
+
+	UFUNCTION(BlueprintCallable)
+	FVolumeSettings GetVolumeSettings();
 };

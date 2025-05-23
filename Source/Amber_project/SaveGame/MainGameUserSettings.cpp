@@ -3,6 +3,8 @@
 
 #include "MainGameUserSettings.h"
 
+#include "Kismet/GameplayStatics.h"
+
 FWindowsSettings UMainGameUserSettings::GetWindowsSettings()
 {
 	return this->WindowsSettings;
@@ -22,4 +24,10 @@ void UMainGameUserSettings::UpdateWindowSettings(FWindowsSettings& NewSettings)
 
 	SaveSettings();
 	
+}
+
+
+FVolumeSettings UMainGameUserSettings::GetVolumeSettings()
+{
+	return this->VolumeSettings;
 }

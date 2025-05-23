@@ -8,7 +8,6 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "SaveGame/VolumeSave.h"
 
 void AMainPlayerController::BeginPlay()
 {
@@ -23,18 +22,6 @@ void AMainPlayerController::BeginPlay()
 	}
 
 	InitKeySave();
-
-	UVolumeSave* Settings = GetMutableDefault<UVolumeSave>();
-	
-	if (Settings && SoundMix && SoundClass_Master && SoundClass_BGM && SoundClass_Sound)
-	{
-		Settings->LoadConfig();
-		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_Master, Settings->MasterVolumeValue, 1, 1, true);
-		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_BGM, Settings->BGMVolumeValue, 1, 1, true);
-		UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMix, SoundClass_Sound, Settings->SoundVolumeValue, 1, 1, true);
-		UGameplayStatics::PushSoundMixModifier(GetWorld(), SoundMix);
-	}
-
 	
 //切换角色尝试
 	FVector SpawnLoc = FVector(20, 0, 0);

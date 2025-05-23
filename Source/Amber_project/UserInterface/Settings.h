@@ -8,6 +8,7 @@
 #include "InputCoreTypes.h"
 #include "Components/InputKeySelector.h"
 #include "InputMappingContext.h"
+#include "Amber_project/SaveGame/MainGameUserSettings.h"
 #include "Components/ComboBox.h"
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
@@ -115,6 +116,7 @@ public:
 	UInputMappingContext* InputMappingContext_Controller;
 
 public:
+	//音频
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
 	USoundMix* SoundMix;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
@@ -123,6 +125,9 @@ public:
 	USoundClass* SoundClass_BGM;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
 	USoundClass* SoundClass_Sound;
+	
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	FVolumeSettings VolumeSettings;
 	
 	UPROPERTY(meta=(BindWidget))
 	USlider* Slider_MasterVolume;
@@ -183,4 +188,9 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UConfirmDialogWidget> ConfrimDialogClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWindowsSettings OldSettings;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FWindowsSettings NewSettings;
 };
