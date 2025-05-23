@@ -2,6 +2,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/WidgetSwitcher.h"
 #include "Amber_project/MainPlayerController.h"
+#include "Amber_project/Audio/MainMusicManager.h"
 #include "Amber_project/SaveGame/MainGameUserSettings.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Slider.h"
@@ -316,8 +317,11 @@ void USettings::OnSlider_MasterVolume_ValueChange(float value)
 		UserSettings->VolumeSettings.MasterVolume = value;
 		UserSettings->SaveSettings();
 		
-		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_Master,value,1,0,true);
-		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+		UMainMusicManager* MusicManager = GetWorld()->GetSubsystem<UMainMusicManager>();
+		if (MusicManager)
+		{
+			MusicManager->ApplyVolume();
+		}
 	}
 }
 
@@ -330,8 +334,11 @@ void USettings::OnSlider_BGMVolume_ValueChange(float value)
 		UserSettings->VolumeSettings.BGMVolume = value;
 		UserSettings->SaveSettings();
 
-		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_BGM,value,1,0,true);
-		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+		UMainMusicManager* MusicManager = GetWorld()->GetSubsystem<UMainMusicManager>();
+		if (MusicManager)
+		{
+			MusicManager->ApplyVolume();
+		}
 	}
 }
 
@@ -344,8 +351,11 @@ void USettings::OnSlider_SoundVolume_ValueChange(float value)
 		UserSettings->VolumeSettings.SoundVolume = value;
 		UserSettings->SaveSettings();
 		
-		UGameplayStatics::SetSoundMixClassOverride(this,SoundMix,SoundClass_Sound,value,1,0,true);
-		UGameplayStatics::PushSoundMixModifier(this,SoundMix);
+		UMainMusicManager* MusicManager = GetWorld()->GetSubsystem<UMainMusicManager>();
+		if (MusicManager)
+		{
+			MusicManager->ApplyVolume();
+		}
 	}
 }
 

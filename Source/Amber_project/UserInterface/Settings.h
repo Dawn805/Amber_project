@@ -117,15 +117,6 @@ public:
 
 public:
 	//音频
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
-	USoundMix* SoundMix;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Master;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_BGM;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Sound;
-	
 	UPROPERTY(BlueprintReadWrite,EditAnywhere)
 	FVolumeSettings VolumeSettings;
 	
