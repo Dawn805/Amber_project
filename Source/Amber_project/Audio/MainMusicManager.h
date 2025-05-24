@@ -30,4 +30,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ApplyVolume();
+
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USoundBase* CurrentSound = nullptr;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UAudioComponent* AudioComponent = nullptr;
+
+	UFUNCTION(BlueprintCallable)
+	void PlaySound(USoundBase* Sound,float whenout,float whenin,float VolumeValue);
+	
 };

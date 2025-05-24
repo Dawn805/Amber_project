@@ -4,6 +4,7 @@
 #include "MainMusicManager.h"
 
 #include "Amber_project/SaveGame/MainGameUserSettings.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 TStatId UMainMusicManager::GetStatId() const
@@ -34,3 +35,39 @@ void UMainMusicManager::ApplyVolume()
 	UGameplayStatics::SetSoundMixClassOverride(World,SoundMix,SoundClass_Sound,VSettings.SoundVolume,1,0,true);
 	UGameplayStatics::PushSoundMixModifier(World,SoundMix);
 }
+
+void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin,float VolumeValue)
+{
+	if (Sound == nullptr)
+	{
+		if (AudioComponent != nullptr)
+		{
+			AudioComponent->FadeOut(whenout,0.0f);
+			AudioComponent->bAutoDestroy = true;
+			AudioComponent = nullptr;
+		}
+		CurrentSound = nullptr;
+		return;
+	}
+
+	if (Sound == CurrentSound) return;
+
+	if (Sound != CurrentSound)
+	{
+		if (AudioComponent != nullptr)
+		{
+			AudioComponent->FadeOut(whenout,0.0f);
+			AudioComponent->bAutoDestroy = true;
+			AudioComponent = nullptr;
+		}
+
+		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(this,Sound,0.0f);
+		if (NewAudioComponent)
+		{
+			AudioComponent = NewAudioComponent;
+			AudioComponent->FadeIn(whenin,VolumeValue);
+			CurrentSound = Sound;
+		}
+	}
+}
+
