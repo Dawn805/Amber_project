@@ -61,7 +61,7 @@ void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin,f
 			AudioComponent = nullptr;
 		}
 
-		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(this,Sound,0.0f);
+		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(),Sound,0.0f);
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
