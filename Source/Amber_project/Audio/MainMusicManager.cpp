@@ -36,14 +36,14 @@ void UMainMusicManager::ApplyVolume()
 	UGameplayStatics::PushSoundMixModifier(World,SoundMix);
 }
 
-void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin,float VolumeValue)
+void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin)
 {
 	if (Sound == nullptr)
 	{
 		if (AudioComponent != nullptr)
 		{
 			AudioComponent->FadeOut(whenout,0.0f);
-			AudioComponent->bAutoDestroy = true;
+			AudioComponent->GetOwner()->SetLifeSpan(whenout+0.5f);
 			AudioComponent = nullptr;
 		}
 		CurrentSound = nullptr;
@@ -57,15 +57,18 @@ void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin,f
 		if (AudioComponent != nullptr)
 		{
 			AudioComponent->FadeOut(whenout,0.0f);
-			AudioComponent->bAutoDestroy = true;
+			AudioComponent->GetOwner()->SetLifeSpan(whenout+0.5f);
 			AudioComponent = nullptr;
 		}
 
-		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(),Sound,0.0f);
+		UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+		FVolumeSettings VSettings = UserSettings->GetVolumeSettings();
+		
+		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(),Sound,1);
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
-			AudioComponent->FadeIn(whenin,VolumeValue);
+			AudioComponent->FadeIn(whenin,VSettings.BGMVolume*VSettings.MasterVolume+0.01);
 			CurrentSound = Sound;
 		}
 	}

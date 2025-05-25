@@ -38,6 +38,6 @@ public:
 	UAudioComponent* AudioComponent = nullptr;
 
 	UFUNCTION(BlueprintCallable)
-	void PlaySound(USoundBase* Sound,float whenout,float whenin,float VolumeValue);
+	void PlaySound(USoundBase* Sound,float whenout,float whenin);
 	
 };
