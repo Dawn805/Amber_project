@@ -49,5 +49,5 @@ public:
 	int HasItem(FBackpackItems NewItem);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FBackpackItems> Items;
+	TArray<FBackpackItems> Backpack_Items;
 };

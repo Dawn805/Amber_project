@@ -8,6 +8,12 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "UserInterface/Backpack.h"
+
+AMainPlayerController::AMainPlayerController()
+{
+	BackpackComponent = CreateDefaultSubobject<UBackpackComponent>(TEXT("Backpack"));	
+}
 
 void AMainPlayerController::BeginPlay()
 {
@@ -65,10 +71,11 @@ void AMainPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		if (OpenMenuAction)
-		{
 			EnhancedInput->BindAction(OpenMenuAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenMenu);
+		if (SwitchCharacterAction)
 			EnhancedInput->BindAction(SwitchCharacterAction,ETriggerEvent::Started,this,&AMainPlayerController::SwitchCharacter);
-		}
+		if (OpenBackpackAction)
+			EnhancedInput->BindAction(OpenBackpackAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenBackpack);
 	}
 }
 
@@ -178,5 +185,37 @@ void AMainPlayerController::SwitchCharacter()
 	Possess(AnotherCharacter);
 
 	Swap(CurrentCharacter, AnotherCharacter);
+}
+
+void AMainPlayerController::OpenBackpack()
+{
+	if (MenuWidgetInstance) return;
+	if (BackpackWidgetClass && !BackpackWidgetInstance)
+	{
+		BackpackWidgetInstance = CreateWidget<UBackpack>(GetWorld(),BackpackWidgetClass);
+		if (BackpackWidgetInstance)
+		{
+			BackpackWidgetInstance->SetBackpackComponent(this);
+			BackpackWidgetInstance->AddToViewport();
+			this->bShowMouseCursor = true;
+			this->SetPause(true);
+		}
+		return;
+	}
+	if (BackpackWidgetInstance)
+	{
+		CloseBackpack();
+	}
+}
+
+void AMainPlayerController::CloseBackpack()
+{
+	if (BackpackWidgetInstance)
+	{
+		BackpackWidgetInstance->RemoveFromParent();
+		BackpackWidgetInstance = nullptr;
+		this->bShowMouseCursor = false;
+		this->SetPause(false);
+	}
 }
 

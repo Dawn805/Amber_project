@@ -36,9 +36,9 @@ void UBackpackComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 int UBackpackComponent::HasItem(FBackpackItems NewItem)
 {
-	for (int i = 0 ; i < Items.Num(); i++)
+	for (int i = 0 ; i < Backpack_Items.Num(); i++)
 	{
-		if (Items[i].ItemName == NewItem.ItemName)
+		if (Backpack_Items[i].ItemName == NewItem.ItemName)
 		{
 			return i;
 		}
@@ -51,10 +51,10 @@ void UBackpackComponent::AddItem(FBackpackItems NewItem)
 	int sub = HasItem(NewItem);
 	if (sub == -1)
 	{
-		Items.Add(NewItem);
+		Backpack_Items.Add(NewItem);
 		return;
 	}
-	Items[sub].ItemCount += 1;
+	Backpack_Items[sub].ItemCount += 1;
 }
 
 void UBackpackComponent::UseItem(FBackpackItems NewItem)
@@ -62,11 +62,11 @@ void UBackpackComponent::UseItem(FBackpackItems NewItem)
 	int sub = HasItem(NewItem);
 	if (sub == -1) return;
 
-	Items[sub].ItemCount -= 1;
+	Backpack_Items[sub].ItemCount -= 1;
 
-	if (Items[sub].ItemCount == 0)
+	if (Backpack_Items[sub].ItemCount == 0)
 	{
-		Items.RemoveAt(sub);
+		Backpack_Items.RemoveAt(sub);
 	}
 }
 

@@ -9,7 +9,9 @@
 #include "EnhancedInputComponent.h"
 #include "UserInterface/Settings.h"
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
+#include "Backpack/BackpackComponent.h"
 #include "UserInterface/PlayerStateWidget.h"
+class UBackpack;
 class AMainPaperZDCharacter;
 #include "MainPlayerController.generated.h"
 
@@ -26,6 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	AMainPlayerController();
+	
+public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputMappingContext* InputMapping;
 	
@@ -34,6 +39,9 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* SwitchCharacterAction;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UInputAction* OpenBackpackAction;
 
 	UFUNCTION(BlueprintCallable)
 	void OpenMenu(const struct FInputActionInstance& Instance);
@@ -48,6 +56,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SwitchCharacter();
 
+	UFUNCTION(BlueprintCallable)
+	void OpenBackpack();
+	UFUNCTION(BlueprintCallable)
+	void CloseBackpack();
+
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> MenuWidgetClass;
@@ -58,6 +71,11 @@ public:
 	TSubclassOf<UUserWidget> SettingsWidgetClass;
 	UPROPERTY()
 	UUserWidget* SettingsWidgetInstance = nullptr;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UBackpack> BackpackWidgetClass;
+	UPROPERTY()
+	UBackpack* BackpackWidgetInstance = nullptr;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -94,4 +112,9 @@ public:
 	TSubclassOf<UPlayerStateWidget> PlayerStateWidgetClass;
 	UPROPERTY()
 	UPlayerStateWidget* PlayerStateWidgetInstance;
+
+	//背包
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UBackpackComponent* BackpackComponent;
 };
