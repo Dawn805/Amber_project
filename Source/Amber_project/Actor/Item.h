@@ -23,14 +23,17 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemName;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int ItemCount = 1;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* ItemIcon;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	int ItemID = 0;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UPaperSpriteComponent* ItemSprite;

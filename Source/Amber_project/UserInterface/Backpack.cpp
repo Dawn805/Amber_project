@@ -26,11 +26,11 @@ void UBackpack::RefreshBackpack()
 		{
 			Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[i],BackpackComponent,this);
 			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
-			h++;
-			if (h >= 6)
+			l++;
+			if (l >= 6)
 			{
-				h = 0;
-				l++;
+				l = 0;
+				h++;
 			}
 		}
 	}

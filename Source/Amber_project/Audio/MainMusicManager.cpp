@@ -48,10 +48,10 @@ void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin)
 		}
 		CurrentSound = nullptr;
 		return;
-	}
+	}				
 
 	if (Sound == CurrentSound) return;
-
+		
 	if (Sound != CurrentSound)
 	{
 		if (AudioComponent != nullptr)
@@ -68,7 +68,7 @@ void UMainMusicManager::PlaySound(USoundBase* Sound,float whenout,float whenin)
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
-			AudioComponent->FadeIn(whenin,VSettings.BGMVolume*VSettings.MasterVolume+0.01);
+			AudioComponent->FadeIn(whenin,VSettings.BGMVolume*VSettings.MasterVolume);
 			CurrentSound = Sound;
 		}
 	}

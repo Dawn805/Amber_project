@@ -196,6 +196,7 @@ void AMainPlayerController::OpenBackpack()
 		if (BackpackWidgetInstance)
 		{
 			BackpackWidgetInstance->SetBackpackComponent(this);
+			BackpackWidgetInstance->RefreshBackpack();
 			BackpackWidgetInstance->AddToViewport();
 			this->bShowMouseCursor = true;
 			this->SetPause(true);

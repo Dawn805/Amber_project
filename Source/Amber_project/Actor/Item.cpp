@@ -3,6 +3,9 @@
 
 #include "Item.h"
 
+#include "Amber_project/MainPlayerController.h"
+#include "Amber_project/Player/MainPaperZDCharacter.h"
+
 
 // Sets default values
 AItem::AItem()
@@ -12,6 +15,12 @@ AItem::AItem()
 
 	ItemSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Item"));
 	RootComponent = ItemSprite;
+
+	ItemSprite->SetGenerateOverlapEvents(true);
+	ItemSprite->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ItemSprite->SetCollisionObjectType(ECC_WorldDynamic);
+	ItemSprite->SetCollisionResponseToAllChannels(ECR_Ignore);
+	ItemSprite->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -25,5 +34,17 @@ void AItem::BeginPlay()
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AItem::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (AMainPaperZDCharacter* ZDCharacter = Cast<AMainPaperZDCharacter>(OtherActor))
+	{
+		AMainPlayerController* ZDController = Cast<AMainPlayerController>(ZDCharacter->GetController());
+		FBackpackItems ThisItem = {ItemName,ItemCount,ItemIcon};
+		ZDController->BackpackComponent->AddItem(ThisItem);
+
+		this->Destroy();
+	}
 }
 
