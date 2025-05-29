@@ -3,6 +3,8 @@
 
 #include "Backpack.h"
 
+#include "Kismet/GameplayStatics.h"
+
 void UBackpack::SetBackpackComponent(AMainPlayerController* Controller)
 {
 	if (Controller)
@@ -29,6 +31,24 @@ void UBackpack::RefreshBackpack()
 				sub++;
 			}
 			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
+		}
+	}
+
+	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
+	if (MainPlayerController)
+	{
+		AMainPaperZDCharacter* ZdCharacter = Cast<AMainPaperZDCharacter>(MainPlayerController->GetPawn());
+		if (ZdCharacter->Character_ID == 1)
+		{
+			FSlateBrush Brush;
+			Brush.SetResourceObject(MainPlayerController->Image_Character_Swordsman);
+			Character_Image->SetBrush(Brush);
+		}
+		if (ZdCharacter->Character_ID == 4)
+		{
+			FSlateBrush Brush;
+			Brush.SetResourceObject(MainPlayerController->Image_Character_Wizard);
+			Character_Image->SetBrush(Brush);
 		}
 	}
 }

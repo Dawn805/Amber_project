@@ -33,4 +33,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RefreshBackpack();
+
+	//显示当前角色
+	UPROPERTY(meta=(BindWidget))
+	UImage* Character_Image;
 };

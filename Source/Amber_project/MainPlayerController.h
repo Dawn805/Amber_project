@@ -117,4 +117,9 @@ public:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UBackpackComponent* BackpackComponent;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* Image_Character_Swordsman;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* Image_Character_Wizard;
 };
