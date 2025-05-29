@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/Button.h"
 class UBackpack;
 #include "Amber_project/Backpack/BackpackComponent.h"
 #include "Blueprint/UserWidget.h"
@@ -25,6 +26,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* ItemCount;
 
+protected:
+	virtual void NativeConstruct() override;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void SetItemWidget(FBackpackItems& Item,UBackpackComponent* InBackpackComponent,UBackpack* InBackpack);
 
@@ -37,4 +42,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBackpack* Backpack_0;
+	
+	//点击使用
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Background;
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Use;
+
+	UFUNCTION(BlueprintCallable)
+	void On_ButtonBackground_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_ButtonUse_Clicked();
 };
