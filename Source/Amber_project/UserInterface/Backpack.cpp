@@ -16,22 +16,19 @@ void UBackpack::RefreshBackpack()
 	if (!BackpackComponent || !GridPanel) return;
 	GridPanel->ClearChildren();
 
-	int h = 0;
-	int l = 0;
-
-	for (int i = 0 ; i < BackpackComponent->Backpack_Items.Num(); i++)
+	int sum = BackpackComponent->Backpack_Items.Num();	
+	int sub = 0;
+	for (int h = 0 ; h < 5 ; h++)
 	{
-		UBackpack_th* Backpack_Th = CreateWidget<UBackpack_th>(this,BackpackThClass);
-		if (Backpack_Th)
+		for (int l = 0 ; l < 6 ; l++)
 		{
-			Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[i],BackpackComponent,this);
-			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
-			l++;
-			if (l >= 6)
+			UBackpack_th* Backpack_Th = CreateWidget<UBackpack_th>(this,BackpackThClass);
+			if (sub < sum)
 			{
-				l = 0;
-				h++;
+				Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[sub],BackpackComponent,this);
+				sub++;
 			}
+			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
 		}
 	}
 }
