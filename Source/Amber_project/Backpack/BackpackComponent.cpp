@@ -52,7 +52,7 @@ void UBackpackComponent::AddItem(FBackpackItems NewItem)
 	if (sub == -1)
 	{
 		Backpack_Items.Add(NewItem);
-		return;
+		return; 
 	}
 	Backpack_Items[sub].ItemCount += 1;
 }

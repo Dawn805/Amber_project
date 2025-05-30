@@ -28,7 +28,10 @@ void UBackpack_th::SetItemWidget(FBackpackItems& Item, UBackpackComponent* InBac
 
 void UBackpack_th::On_ButtonBackground_Clicked()
 {
-	Button_Use->SetVisibility(ESlateVisibility::Visible);
+	if (bUse)
+	{
+		Button_Use->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 void UBackpack_th::On_ButtonUse_Clicked()

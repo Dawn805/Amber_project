@@ -53,4 +53,7 @@ public:
 	void On_ButtonBackground_Clicked();
 	UFUNCTION(BlueprintCallable)
 	void On_ButtonUse_Clicked();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bUse = false;
 };

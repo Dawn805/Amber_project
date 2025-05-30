@@ -28,6 +28,7 @@ void UBackpack::RefreshBackpack()
 			if (sub < sum)
 			{
 				Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[sub],BackpackComponent,this);
+				Backpack_Th->bUse = true;
 				sub++;
 			}
 			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
