@@ -175,6 +175,11 @@ void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 
 void UMainMusicManager::DeleteOldBGM(FAudioBGM OldBGM)
 {
+	//这是最后你FadeIn的音量大小
+	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
+	FVolumeSettings VSettings = UserSettings->GetVolumeSettings();
+	float VolumeValue = VSettings.MasterVolume * VSettings.BGMVolume;
+	
 	//如果OldBGM不是当前正在播放的BGM，那很好了，很省事了
 	if (OldBGM.BGM != BGMs[0].BGM)
 	{
@@ -198,7 +203,7 @@ void UMainMusicManager::DeleteOldBGM(FAudioBGM OldBGM)
 	if (NewAudioComponent)
 	{
 		AudioComponent = NewAudioComponent;
-		AudioComponent->FadeIn(BGMs[0].FadeInTime,0.0f);
+		AudioComponent->FadeIn(BGMs[0].FadeInTime,VolumeValue);
 	}
 }
 
