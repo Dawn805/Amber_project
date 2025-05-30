@@ -28,6 +28,7 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -56,4 +57,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bUse = false;
+
+	//使用按钮将在显示3秒后关闭
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float ThreeTime = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bButton_Show = false;
 };

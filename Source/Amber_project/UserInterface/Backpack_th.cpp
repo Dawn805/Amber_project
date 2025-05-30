@@ -32,10 +32,25 @@ void UBackpack_th::On_ButtonBackground_Clicked()
 	{
 		Button_Use->SetVisibility(ESlateVisibility::Visible);
 	}
+	bButton_Show = true;
 }
 
 void UBackpack_th::On_ButtonUse_Clicked()
 {
 	BackpackComponent_0->UseItem(Item_0);
 	Backpack_0->RefreshBackpack();
+}
+
+void UBackpack_th::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	if (bButton_Show)
+	{
+		ThreeTime = ThreeTime+InDeltaTime;
+	}
+	if (ThreeTime > 3.0f)
+	{
+		bButton_Show = false;
+		ThreeTime = 0.0f;
+		Button_Use->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
