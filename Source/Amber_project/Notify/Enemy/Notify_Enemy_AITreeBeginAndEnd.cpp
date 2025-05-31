@@ -23,5 +23,5 @@ void UNotify_Enemy_AITreeBeginAndEnd::OnNotifyEnd_Implementation(UPaperZDAnimIns
 	AMainPaperZDEnemy* Enemy = Cast<AMainPaperZDEnemy>(OwningInstance->GetPaperCharacter());
 	if (!Enemy) return;
 
-	Enemy->AITree_Begin();
+	if (Enemy->HP > 0) Enemy->AITree_Begin();
 }
