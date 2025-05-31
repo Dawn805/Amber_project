@@ -53,3 +53,8 @@ void UBackpack::RefreshBackpack()
 		}
 	}
 }
+
+void UBackpack::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Text_Describe->SetText(FText::FromStringTable("/Game/Text/Item",Item_Describe.ToString()));
+}

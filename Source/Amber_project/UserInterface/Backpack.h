@@ -18,6 +18,9 @@ class AMBER_PROJECT_API UBackpack : public UUserWidget
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UBackpackComponent* BackpackComponent;
@@ -37,4 +40,11 @@ public:
 	//显示当前角色
 	UPROPERTY(meta=(BindWidget))
 	UImage* Character_Image;
+
+	//给物品添加描述
+public:
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_Describe;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName Item_Describe = "nullptr";
 };

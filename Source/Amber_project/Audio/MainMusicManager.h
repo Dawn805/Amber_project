@@ -16,7 +16,7 @@ struct FAudioBGM
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USoundBase* BGM;
+	USoundBase* BGM = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Priority = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -119,7 +119,8 @@ public:
 	//音频
 	UPROPERTY(BlueprintReadWrite,EditAnywhere)
 	FVolumeSettings VolumeSettings;
-	
+
+public:
 	UPROPERTY(meta=(BindWidget))
 	USlider* Slider_MasterVolume;
 	UPROPERTY(meta=(BindWidget))

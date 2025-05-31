@@ -33,6 +33,9 @@ void UBackpack_th::On_ButtonBackground_Clicked()
 		Button_Use->SetVisibility(ESlateVisibility::Visible);
 	}
 	bButton_Show = true;
+	
+	//将物品信息传入Backpack
+	Backpack_0->Item_Describe = Item_0.ItemName;
 }
 
 void UBackpack_th::On_ButtonUse_Clicked()
