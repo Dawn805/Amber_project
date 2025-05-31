@@ -38,14 +38,17 @@ void UBackpack::RefreshBackpack()
 	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
 	if (MainPlayerController)
 	{
-		AMainPaperZDCharacter* ZdCharacter = Cast<AMainPaperZDCharacter>(MainPlayerController->GetPawn());
-		if (ZdCharacter->Character_ID == 1)
+		if (CurrentCharacter == nullptr)
+		{
+			CurrentCharacter = MainPlayerController->CurrentCharacter;
+		}
+		if (CurrentCharacter->Character_ID == 1)
 		{
 			FSlateBrush Brush;
 			Brush.SetResourceObject(MainPlayerController->Image_Character_Swordsman);
 			Character_Image->SetBrush(Brush);
 		}
-		if (ZdCharacter->Character_ID == 4)
+		if (CurrentCharacter->Character_ID == 4)
 		{
 			FSlateBrush Brush;
 			Brush.SetResourceObject(MainPlayerController->Image_Character_Wizard);
@@ -57,4 +60,35 @@ void UBackpack::RefreshBackpack()
 void UBackpack::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Text_Describe->SetText(FText::FromStringTable("/Game/Text/Item",Item_Describe.ToString()));
+}
+
+void UBackpack::NativeConstruct()
+{
+	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
+	if (MainPlayerController)
+	{
+		CurrentCharacter = MainPlayerController->CurrentCharacter;
+	}
+	Button_Character_A->OnClicked.AddDynamic(this, &UBackpack::SetCharacter_A);
+	Button_Character_B->OnClicked.AddDynamic(this, &UBackpack::SetCharacter_B);
+}
+
+void UBackpack::SetCharacter_A()
+{
+	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
+	if (MainPlayerController)
+	{
+		CurrentCharacter = MainPlayerController->CharacterA;
+	}
+	RefreshBackpack();
+}
+
+void UBackpack::SetCharacter_B()
+{
+	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
+	if (MainPlayerController)
+	{
+		CurrentCharacter = MainPlayerController->CharacterB;
+	}
+	RefreshBackpack();
 }

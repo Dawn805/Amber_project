@@ -25,6 +25,10 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UBackpackComponent* BackpackComponent;
 
+protected:
+	virtual void NativeConstruct() override;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void SetBackpackComponent(AMainPlayerController* Controller);
 
@@ -47,4 +51,19 @@ public:
 	UTextBlock* Text_Describe;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Item_Describe = "nullptr";
+
+	//在背包中给不同的角色使用物品
+public:
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Character_A;
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Character_B;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	AMainPaperZDCharacter* CurrentCharacter = nullptr;
+
+	UFUNCTION(BlueprintCallable)
+	void SetCharacter_A();
+	UFUNCTION(BlueprintCallable)
+	void SetCharacter_B();
 };
