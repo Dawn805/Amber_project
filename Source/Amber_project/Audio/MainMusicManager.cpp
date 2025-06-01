@@ -22,6 +22,11 @@ void UMainMusicManager::PostInitialize()
 	ApplyVolume();
 }
 
+void UMainMusicManager::OnWorldBeginPlay(UWorld& InWorld)
+{
+	ApplyVolume();	
+}
+
 void UMainMusicManager::ApplyVolume()
 {
 	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
@@ -85,11 +90,6 @@ void UMainMusicManager::BGMs_Sort()
 
 void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 {
-	//这是最后你FadeIn的音量大小
-	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	FVolumeSettings VSettings = UserSettings->GetVolumeSettings();
-	float VolumeValue = VSettings.MasterVolume * VSettings.BGMVolume;
-	
 	int sum = BGMs.Num();
 	
 	//如果数组里面啥都没有，就直接Add插入
@@ -100,7 +100,7 @@ void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
-			AudioComponent->FadeIn(NewBGM.FadeInTime,VolumeValue);
+			AudioComponent->FadeIn(BGMs[0].FadeInTime,1);
 		}
 		return;
 	}
@@ -150,7 +150,7 @@ void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
-			AudioComponent->FadeIn(NewBGM.FadeInTime,VolumeValue);
+			AudioComponent->FadeIn(BGMs[0].FadeInTime,1);
 		}
 		return;
 	}
@@ -168,18 +168,13 @@ void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 		if (NewAudioComponent)
 		{
 			AudioComponent = NewAudioComponent;
-			AudioComponent->FadeIn(NewBGM.FadeInTime,VolumeValue);
+			AudioComponent->FadeIn(BGMs[0].FadeInTime,1);
 		}
 	}
 }
 
 void UMainMusicManager::DeleteOldBGM(FAudioBGM OldBGM)
 {
-	//这是最后你FadeIn的音量大小
-	UMainGameUserSettings* UserSettings = Cast<UMainGameUserSettings>(GEngine->GetGameUserSettings());
-	FVolumeSettings VSettings = UserSettings->GetVolumeSettings();
-	float VolumeValue = VSettings.MasterVolume * VSettings.BGMVolume;
-	
 	//如果OldBGM不是当前正在播放的BGM，那很好了，很省事了
 	if (OldBGM.BGM != BGMs[0].BGM)
 	{
@@ -199,11 +194,40 @@ void UMainMusicManager::DeleteOldBGM(FAudioBGM OldBGM)
 	AudioComponent->GetOwner()->SetLifeSpan(OldBGM.FadeOutTime+0.5f);
 	AudioComponent = nullptr;
 
+	if (BGMs.Num() != 0)
+	{
+		UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(),BGMs[0].BGM,1);
+		if (NewAudioComponent)
+		{
+			AudioComponent = NewAudioComponent;
+			AudioComponent->FadeIn(BGMs[0].FadeInTime,1);
+		}
+	}
+}
+
+void UMainMusicManager::PlayDisposableBGM(FAudioBGM NewBGM)
+{
+	if (AudioComponent && BGMs.Num() != 0)
+	{
+		AudioComponent->FadeOut(BGMs[0].FadeOutTime,0.0f);
+		AudioComponent->GetOwner()->SetLifeSpan(BGMs[0].FadeOutTime+0.5f);
+		AudioComponent = nullptr;
+	}
+
+	BGMs.Insert(NewBGM,0);
+
 	UAudioComponent* NewAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(),BGMs[0].BGM,1);
 	if (NewAudioComponent)
 	{
 		AudioComponent = NewAudioComponent;
-		AudioComponent->FadeIn(BGMs[0].FadeInTime,VolumeValue);
+		AudioComponent->FadeIn(BGMs[0].FadeInTime,1);
+		AudioComponent->OnAudioFinished.AddDynamic(this,&UMainMusicManager::OnDisposableBGMFinished);
 	}
 }
+
+void UMainMusicManager::OnDisposableBGMFinished()
+{
+	DeleteOldBGM(BGMs[0]);
+}
+
 

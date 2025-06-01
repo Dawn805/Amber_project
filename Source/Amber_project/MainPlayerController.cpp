@@ -64,6 +64,12 @@ void AMainPlayerController::BeginPlay()
 	}
 }
 
+void AMainPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	//UKismetSystemLibrary::PrintString(this,FString::Printf(TEXT("Current HP: %f"), CurrentCharacter->StateComponent->HP));
+}
+
 void AMainPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();

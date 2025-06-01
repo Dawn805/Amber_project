@@ -21,8 +21,8 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
-	UPROPERTY(Transient)
-	AMainPlayerController* PlayerController;
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	AMainPlayerController* PlayerController = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* HPBar;

@@ -18,23 +18,6 @@ void UBackpack::RefreshBackpack()
 	if (!BackpackComponent || !GridPanel) return;
 	GridPanel->ClearChildren();
 
-	int sum = BackpackComponent->Backpack_Items.Num();	
-	int sub = 0;
-	for (int h = 0 ; h < 5 ; h++)
-	{
-		for (int l = 0 ; l < 6 ; l++)
-		{
-			UBackpack_th* Backpack_Th = CreateWidget<UBackpack_th>(this,BackpackThClass);
-			if (sub < sum)
-			{
-				Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[sub],BackpackComponent,this);
-				Backpack_Th->bUse = true;
-				sub++;
-			}
-			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
-		}
-	}
-
 	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
 	if (MainPlayerController)
 	{
@@ -53,6 +36,23 @@ void UBackpack::RefreshBackpack()
 			FSlateBrush Brush;
 			Brush.SetResourceObject(MainPlayerController->Image_Character_Wizard);
 			Character_Image->SetBrush(Brush);
+		}
+	}
+
+	int sum = BackpackComponent->Backpack_Items.Num();	
+	int sub = 0;
+	for (int h = 0 ; h < 5 ; h++)
+	{
+		for (int l = 0 ; l < 6 ; l++)
+		{
+			UBackpack_th* Backpack_Th = CreateWidget<UBackpack_th>(this,BackpackThClass);
+			if (sub < sum)
+			{
+				Backpack_Th->SetItemWidget(BackpackComponent->Backpack_Items[sub],BackpackComponent,this,CurrentCharacter);
+				Backpack_Th->bUse = true;
+				sub++;
+			}
+			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
 		}
 	}
 }

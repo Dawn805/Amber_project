@@ -25,6 +25,11 @@ class AMBER_PROJECT_API AMainPlayerController : public APlayerController
 
 protected:
 	virtual void SetupInputComponent() override;
+
+public:
+	virtual void Tick(float DeltaSeconds) override;
+
+protected:
 	virtual void BeginPlay() override;
 
 public:

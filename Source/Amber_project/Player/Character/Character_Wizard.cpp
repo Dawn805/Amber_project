@@ -17,16 +17,6 @@ ACharacter_Wizard::ACharacter_Wizard()
 void ACharacter_Wizard::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (StateComponent)
-	{
-		StateComponent->HP_Max = 80.0f;
-		StateComponent->HP = StateComponent->HP_Max;
-		StateComponent->MP_Max = 100.0f;
-		StateComponent->MP = StateComponent->MP_Max;
-		StateComponent->Damage = 15.0f;
-		StateComponent->Defense = 3.0f;
-	}
 }
 
 // Called every frame

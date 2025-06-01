@@ -20,16 +20,6 @@ ACharacter_Swordsman::ACharacter_Swordsman()
 void ACharacter_Swordsman::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (StateComponent)
-	{
-		StateComponent->HP_Max = 100.0f;
-		StateComponent->HP = StateComponent->HP_Max;
-		StateComponent->MP_Max = 70.0f;
-		StateComponent->MP = StateComponent->MP_Max;
-		StateComponent->Damage = 10.0f;
-		StateComponent->Defense = 5.0f;
-	}
 }
 
 // Called every frame

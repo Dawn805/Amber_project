@@ -33,6 +33,7 @@ class AMBER_PROJECT_API UMainMusicManager : public UTickableWorldSubsystem
 	GENERATED_BODY()
 
 public:
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual TStatId GetStatId() const override;
 	virtual void PostInitialize() override;
 
@@ -73,4 +74,11 @@ public:
 	//删除老的BGM，比如你战斗结束了，战斗BGM就该删掉了
 	UFUNCTION(BlueprintCallable)
 	void DeleteOldBGM(FAudioBGM OldBGM);
+
+	//一次性BGM（boss击杀音效），播放完之后自动结束
+	UFUNCTION(BlueprintCallable)
+	void PlayDisposableBGM(FAudioBGM NewBGM);
+
+	UFUNCTION(BlueprintCallable)
+	void OnDisposableBGMFinished();
 };

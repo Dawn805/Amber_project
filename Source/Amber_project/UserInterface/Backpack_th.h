@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Amber_project/Player/MainPaperZDCharacter.h"
 #include "Components/Button.h"
 class UBackpack;
 #include "Amber_project/Backpack/BackpackComponent.h"
@@ -32,7 +33,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetItemWidget(FBackpackItems& Item,UBackpackComponent* InBackpackComponent,UBackpack* InBackpack);
+	void SetItemWidget(FBackpackItems& Item,UBackpackComponent* InBackpackComponent,UBackpack* InBackpack,AMainPaperZDCharacter* InCharacter);
 
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -63,4 +64,7 @@ public:
 	float ThreeTime = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bButton_Show = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AMainPaperZDCharacter* CurrentCharacter = nullptr;
 };

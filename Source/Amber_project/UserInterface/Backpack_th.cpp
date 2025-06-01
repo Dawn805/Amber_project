@@ -13,7 +13,7 @@ void UBackpack_th::NativeConstruct()
 	Button_Use->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UBackpack_th::SetItemWidget(FBackpackItems& Item, UBackpackComponent* InBackpackComponent, UBackpack* InBackpack)
+void UBackpack_th::SetItemWidget(FBackpackItems& Item, UBackpackComponent* InBackpackComponent, UBackpack* InBackpack,AMainPaperZDCharacter* InCharacter)
 {
 	FSlateBrush Brush;
 	Brush.SetResourceObject(Item.ItemIcon);
@@ -24,6 +24,8 @@ void UBackpack_th::SetItemWidget(FBackpackItems& Item, UBackpackComponent* InBac
 	Item_0 = Item;
 	BackpackComponent_0 = InBackpackComponent;
 	Backpack_0 = InBackpack;
+
+	CurrentCharacter = InCharacter;
 }
 
 void UBackpack_th::On_ButtonBackground_Clicked()
@@ -42,6 +44,18 @@ void UBackpack_th::On_ButtonUse_Clicked()
 {
 	BackpackComponent_0->UseItem(Item_0);
 	Backpack_0->RefreshBackpack();
+
+	if (Item_0.ItemName == "HP_Primary")
+	{
+		CurrentCharacter->StateComponent->HP += 20;
+		if (CurrentCharacter->StateComponent->HP > CurrentCharacter->StateComponent->HP_Max) CurrentCharacter->StateComponent->HP = CurrentCharacter->StateComponent->HP_Max;
+	}
+
+	if (Item_0.ItemName == "HP_Advanced")
+	{
+		CurrentCharacter->StateComponent->HP += 50;
+		if (CurrentCharacter->StateComponent->HP > CurrentCharacter->StateComponent->HP_Max) CurrentCharacter->StateComponent->HP = CurrentCharacter->StateComponent->HP_Max;
+	}
 }
 
 void UBackpack_th::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
