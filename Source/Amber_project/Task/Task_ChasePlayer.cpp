@@ -7,6 +7,7 @@
 #include "Amber_project/Enemy/MainPaperZDEnemy.h"
 #include "Amber_project/Player/MainPaperZDCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UTask_ChasePlayer::UTask_ChasePlayer()
@@ -26,7 +27,7 @@ EBTNodeResult::Type UTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& Owner
 	UBlackboardComponent* BlackboardComponent = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComponent) return EBTNodeResult::Failed;
 
-	AMainPaperZDCharacter* PlayerCharacter = Cast<AMainPaperZDCharacter>(BlackboardComponent->GetValueAsObject("PlayerCharacter"));;
+	AMainPaperZDCharacter* PlayerCharacter = Cast<AMainPaperZDCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!PlayerCharacter) return EBTNodeResult::Failed;
 	
 	AIController->MoveToActor(PlayerCharacter);

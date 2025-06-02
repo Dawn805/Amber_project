@@ -9,6 +9,7 @@
 #include "Amber_project/Enemy/MainPaperZDEnemy.h"
 #include "Amber_project/Player/MainPaperZDCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 EBTNodeResult::Type UTask_AttackPlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -22,7 +23,7 @@ EBTNodeResult::Type UTask_AttackPlayer::ExecuteTask(UBehaviorTreeComponent& Owne
 	UBlackboardComponent* BlackboardComponent = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComponent) return EBTNodeResult::Failed;
 
-	AMainPaperZDCharacter* PlayerCharacter = Cast<AMainPaperZDCharacter>(BlackboardComponent->GetValueAsObject("PlayerCharacter"));
+	AMainPaperZDCharacter* PlayerCharacter = Cast<AMainPaperZDCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!PlayerCharacter) return EBTNodeResult::Failed;
 
 	float Distance = (PlayerCharacter->GetActorLocation() - AIEnemy->GetActorLocation()).Size();
