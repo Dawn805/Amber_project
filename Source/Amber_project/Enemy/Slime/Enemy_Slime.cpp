@@ -15,7 +15,7 @@ AEnemy_Slime::AEnemy_Slime()
 
 	MaxHP = 30.0f;
 	HP = 30.0f;
-	Damage = 2.0f;
+	Damage = 10.0f;
 	Defense = 0.0f;
 	Poise = 10.0f;
 	MaxPoise = 10.0f;
