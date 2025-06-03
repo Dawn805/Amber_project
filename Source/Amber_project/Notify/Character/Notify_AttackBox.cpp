@@ -56,7 +56,7 @@ void UNotify_AttackBox::OnReceiveNotify_Implementation(UPaperZDAnimInstance* Own
 					float Hurt = Player->StateComponent->Damage * AttackDamage_Mult - Enemies->Defense;
 					if (Hurt > 0)
 					{
-						Enemies->HP -= Player->StateComponent->Damage;
+						Enemies->HP -= Hurt;
 					}
 					Enemies->Poise -= BreakPoise;
 				}
