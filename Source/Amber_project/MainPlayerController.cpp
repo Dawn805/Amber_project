@@ -67,7 +67,14 @@ void AMainPlayerController::BeginPlay()
 void AMainPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//UKismetSystemLibrary::PrintString(this,FString::Printf(TEXT("Current HP: %f"), CurrentCharacter->StateComponent->HP));
+	if (CurrentCharacter->StateComponent->HP <= 0)
+	{
+		if (AnotherCharacter->StateComponent->HP > 0)
+		{
+			CurrentCharacter->StateComponent->HP = 0;
+			SwitchCharacter();
+		}
+	}
 }
 
 void AMainPlayerController::SetupInputComponent()

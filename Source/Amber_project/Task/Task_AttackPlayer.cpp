@@ -41,8 +41,6 @@ EBTNodeResult::Type UTask_AttackPlayer::ExecuteTask(UBehaviorTreeComponent& Owne
 	if (AIEnemy->AnimRight == false) return EBTNodeResult::Failed;
 
 	AIEnemy->GetAnimInstance()->JumpToNode(SelectedSkill.SkillName,StateMachineName);
-
-	UKismetSystemLibrary::PrintString(this,"this");
 	
 	return EBTNodeResult::Succeeded;
 }
