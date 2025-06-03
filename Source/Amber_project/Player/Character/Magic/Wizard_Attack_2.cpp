@@ -67,9 +67,13 @@ void AWizard_Attack_2::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 {
 	if (Cast<AMainPaperZDEnemy>(OtherActor))
 	{
-		UPaperZDAnimInstance* FAnimInstance = AnimationComponent_2->GetAnimInstance();
-		FAnimInstance->JumpToNode("Boom","Locomotion");
-		ProjectileMovementComponent_2->Velocity = FVector(0,0,0);
+		AMainPaperZDEnemy* ZdEnemy = Cast<AMainPaperZDEnemy>(OtherActor);
+		if (ZdEnemy->HP > 0)
+		{
+			UPaperZDAnimInstance* FAnimInstance = AnimationComponent_2->GetAnimInstance();
+			FAnimInstance->JumpToNode("Boom","Locomotion");
+			ProjectileMovementComponent_2->Velocity = FVector(0,0,0);
+		}
 	}
 }
 

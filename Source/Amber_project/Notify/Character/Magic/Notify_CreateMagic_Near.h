@@ -4,25 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "PaperZDAnimNotify.h"
-
-#include "Notify_CreateMagic.generated.h"
+#include "Notify_CreateMagic_Near.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AMBER_PROJECT_API UNotify_CreateMagic : public UPaperZDAnimNotify
+class AMBER_PROJECT_API UNotify_CreateMagic_Near : public UPaperZDAnimNotify
 {
 	GENERATED_BODY()
-//从角色身上从左到右
+
 public:
 	virtual void OnReceiveNotify_Implementation(UPaperZDAnimInstance* OwningInstance = nullptr) const override;
 
-public:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	float Location = 1.0f;
-
-public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<AActor> MagicClass;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName SocketName = "No";
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FVector Boxtent = FVector(10, 10, 10);
 };

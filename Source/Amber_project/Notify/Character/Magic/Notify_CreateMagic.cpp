@@ -7,7 +7,6 @@
 
 #include "PaperZDAnimInstance.h"
 #include "Amber_project/Player/MainPaperZDCharacter.h"
-#include "Amber_project/Player/Character/Magic/Wizard_Attack_2.h"
 
 void UNotify_CreateMagic::OnReceiveNotify_Implementation(UPaperZDAnimInstance* OwningInstance) const
 {
@@ -30,6 +29,6 @@ void UNotify_CreateMagic::OnReceiveNotify_Implementation(UPaperZDAnimInstance* O
 	UWorld* World = ZdCharacter->GetWorld();
 	if (World && MagicClass)
 	{
-		AWizard_Attack_2* Mag = World->SpawnActor<AWizard_Attack_2>(MagicClass,SpawnLocation,FRotator::ZeroRotator,  Params);
+		AActor* Mag = World->SpawnActor<AActor>(MagicClass,SpawnLocation,FRotator::ZeroRotator,  Params);
 	}
 }
