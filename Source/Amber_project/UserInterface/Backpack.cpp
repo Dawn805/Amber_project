@@ -55,15 +55,26 @@ void UBackpack::RefreshBackpack()
 			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
 		}
 	}
+
+	Text_Character_Attributes->SetText(FText::FromString(FString::Printf(TEXT("血量:%.0f/%.0f   蓝量:%.0f/%.0f   攻击力:%.0f    防御力:%.0f"),
+	CurrentCharacter->StateComponent->HP,
+	CurrentCharacter->StateComponent->HP_Max,
+	CurrentCharacter->StateComponent->MP,
+	CurrentCharacter->StateComponent->MP_Max,
+	CurrentCharacter->StateComponent->Damage,
+	CurrentCharacter->StateComponent->Defense)));
 }
 
 void UBackpack::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
 	Text_Describe->SetText(FText::FromStringTable("/Game/Text/Item",Item_Describe.ToString()));
 }
 
 void UBackpack::NativeConstruct()
 {
+	Super::NativeConstruct();
 	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
 	if (MainPlayerController)
 	{

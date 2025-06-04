@@ -66,4 +66,7 @@ public:
 	void SetCharacter_A();
 	UFUNCTION(BlueprintCallable)
 	void SetCharacter_B();
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_Character_Attributes;
 };

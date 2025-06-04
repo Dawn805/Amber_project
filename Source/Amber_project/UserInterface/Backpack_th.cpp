@@ -30,6 +30,7 @@ void UBackpack_th::SetItemWidget(FBackpackItems& Item, UBackpackComponent* InBac
 
 void UBackpack_th::On_ButtonBackground_Clicked()
 {
+	if (!bUse) return;
 	if (bUse)
 	{
 		Button_Use->SetVisibility(ESlateVisibility::Visible);
@@ -43,7 +44,6 @@ void UBackpack_th::On_ButtonBackground_Clicked()
 void UBackpack_th::On_ButtonUse_Clicked()
 {
 	BackpackComponent_0->UseItem(Item_0);
-	Backpack_0->RefreshBackpack();
 
 	if (Item_0.ItemName == "HP_Primary")
 	{
@@ -56,10 +56,13 @@ void UBackpack_th::On_ButtonUse_Clicked()
 		CurrentCharacter->StateComponent->HP += 50;
 		if (CurrentCharacter->StateComponent->HP > CurrentCharacter->StateComponent->HP_Max) CurrentCharacter->StateComponent->HP = CurrentCharacter->StateComponent->HP_Max;
 	}
+
+	Backpack_0->RefreshBackpack();
 }
 
 void UBackpack_th::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+	Super::NativeTick(MyGeometry, InDeltaTime);
 	if (bButton_Show)
 	{
 		ThreeTime = ThreeTime+InDeltaTime;
