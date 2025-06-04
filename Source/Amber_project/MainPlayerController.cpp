@@ -89,6 +89,8 @@ void AMainPlayerController::SetupInputComponent()
 			EnhancedInput->BindAction(SwitchCharacterAction,ETriggerEvent::Started,this,&AMainPlayerController::SwitchCharacter);
 		if (OpenBackpackAction)
 			EnhancedInput->BindAction(OpenBackpackAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenBackpack);
+		if (OpenStoreAction)
+			EnhancedInput->BindAction(OpenStoreAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenStore);
 	}
 }
 
@@ -156,6 +158,31 @@ void AMainPlayerController::CloseSettings()
 	if (MenuWidgetInstance)
 	{
 		MenuWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void AMainPlayerController::OpenStore()
+{
+	if (!bOpenStore) return;
+	if (StoreWidgetClass && !StoreWidgetInstance)
+	{
+		StoreWidgetInstance = CreateWidget<UStore>(GetWorld(),StoreWidgetClass);
+		if (StoreWidgetInstance)
+		{
+			StoreWidgetInstance->AddToViewport();
+			this->bShowMouseCursor = true;
+			this->SetPause(true);
+		}
+		return;
+	}
+	
+	if (StoreWidgetInstance)
+	{
+		StoreWidgetInstance->RemoveFromParent();
+		StoreWidgetInstance = nullptr;
+		this->bShowMouseCursor = false;
+		this->SetPause(false);
+		return;
 	}
 }
 

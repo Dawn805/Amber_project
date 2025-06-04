@@ -11,6 +11,7 @@
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
 #include "Backpack/BackpackComponent.h"
 #include "UserInterface/PlayerStateWidget.h"
+#include "UserInterface/Store.h"
 class UBackpack;
 class AMainPaperZDCharacter;
 #include "MainPlayerController.generated.h"
@@ -48,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* OpenBackpackAction;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UInputAction* OpenStoreAction;
+
 	UFUNCTION(BlueprintCallable)
 	void OpenMenu(const struct FInputActionInstance& Instance);
 	UFUNCTION(BlueprintCallable)
@@ -66,6 +70,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CloseBackpack();
 
+	UFUNCTION(BlueprintCallable)
+	void OpenStore();
+
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> MenuWidgetClass;
@@ -82,19 +89,14 @@ public:
 	UPROPERTY()
 	UBackpack* BackpackWidgetInstance = nullptr;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UStore> StoreWidgetClass;
+	UPROPERTY()
+	UStore* StoreWidgetInstance = nullptr;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void InitKeySave();
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Volume")
-	USoundMix* SoundMix;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Master;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_BGM;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Volume")
-	USoundClass* SoundClass_Sound;
 
 //更换角色
 public:
@@ -127,4 +129,9 @@ public:
 	UTexture2D* Image_Character_Swordsman;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* Image_Character_Wizard;
+
+	//打开商店
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bOpenStore = false;
 };
