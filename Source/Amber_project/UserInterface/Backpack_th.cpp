@@ -57,6 +57,18 @@ void UBackpack_th::On_ButtonUse_Clicked()
 		if (CurrentCharacter->StateComponent->HP > CurrentCharacter->StateComponent->HP_Max) CurrentCharacter->StateComponent->HP = CurrentCharacter->StateComponent->HP_Max;
 	}
 
+	if (Item_0.ItemName == "MP_Primary")
+	{
+		CurrentCharacter->StateComponent->MP += 20;
+		if (CurrentCharacter->StateComponent->MP > CurrentCharacter->StateComponent->MP_Max) CurrentCharacter->StateComponent->MP = CurrentCharacter->StateComponent->MP_Max;
+	}
+
+	if (Item_0.ItemName == "MP_Advanced")
+	{
+		CurrentCharacter->StateComponent->MP += 50;
+		if (CurrentCharacter->StateComponent->MP > CurrentCharacter->StateComponent->MP_Max) CurrentCharacter->StateComponent->MP = CurrentCharacter->StateComponent->MP_Max;
+	}
+
 	Backpack_0->RefreshBackpack();
 }
 

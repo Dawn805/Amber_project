@@ -10,12 +10,14 @@ class UStore_th;
 #include "Components/UniformGridPanel.h"
 #include "Store.generated.h"
 
+
 /**
  * 
  */
 
 USTRUCT(BlueprintType)
 struct FStoreItems
+
 {
 	GENERATED_BODY()
 
@@ -68,4 +70,8 @@ public:
 	UTexture2D* ItemIcon_1;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* ItemIcon_2;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* ItemIcon_3;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* ItemIcon_4;
 };

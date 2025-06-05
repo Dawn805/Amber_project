@@ -12,7 +12,8 @@
 
 AMainPlayerController::AMainPlayerController()
 {
-	BackpackComponent = CreateDefaultSubobject<UBackpackComponent>(TEXT("Backpack"));	
+	BackpackComponent = CreateDefaultSubobject<UBackpackComponent>(TEXT("BackpackComponent"));
+	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>(TEXT("EquipmentComponent"));
 }
 
 void AMainPlayerController::BeginPlay()

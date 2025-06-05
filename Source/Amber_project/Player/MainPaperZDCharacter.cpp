@@ -11,6 +11,7 @@ AMainPaperZDCharacter::AMainPaperZDCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	StateComponent = CreateDefaultSubobject<UStateComponent>("StateComponent");
+	Equipment = CreateDefaultSubobject<UEquipment>("Equipment");
 }
 
 void AMainPaperZDCharacter::BeginPlay()

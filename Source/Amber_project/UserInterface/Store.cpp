@@ -12,6 +12,8 @@ void UStore::NativeConstruct()
 	Super::NativeConstruct();
 	StoreItems.Add({"HP_Primary",1,ItemIcon_1,40});
 	StoreItems.Add({"HP_Advanced",1,ItemIcon_2,100});
+	StoreItems.Add({"MP_Primary",1,ItemIcon_3,40});
+	StoreItems.Add({"MP_Advanced",1,ItemIcon_4,100});
 
 	RefreshItem();
 }

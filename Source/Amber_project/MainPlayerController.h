@@ -130,6 +130,10 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* Image_Character_Wizard;
 
+	//装备
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UEquipmentComponent* EquipmentComponent;
+
 	//打开商店
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)

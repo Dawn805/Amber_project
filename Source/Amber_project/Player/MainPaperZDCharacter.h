@@ -5,6 +5,7 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "Amber_project/Player/Component/StateComponent.h"
+#include "Component/Equipment.h"
 #include "GameFramework/Character.h"
 #include "MainPaperZDCharacter.generated.h"
 
@@ -50,6 +51,9 @@ protected:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UStateComponent* StateComponent;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UEquipment* Equipment;
 
 	virtual void OnJumped_Implementation() override;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
