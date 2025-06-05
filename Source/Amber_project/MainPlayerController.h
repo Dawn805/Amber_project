@@ -134,4 +134,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool bOpenStore = false;
+
+	//这是能用的钱
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	int Money = 10000;
 };
