@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PaperSprite.h"
 #include "Components/ActorComponent.h"
 #include "EquipmentComponent.generated.h"
 

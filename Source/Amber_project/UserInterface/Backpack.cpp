@@ -10,6 +10,7 @@ void UBackpack::SetBackpackComponent(AMainPlayerController* Controller)
 	if (Controller)
 	{
 		BackpackComponent = Controller->BackpackComponent;
+		EquipmentComponent = Controller->EquipmentComponent;
 	}
 }
 
@@ -41,6 +42,7 @@ void UBackpack::RefreshBackpack()
 
 	int sum = BackpackComponent->Backpack_Items.Num();	
 	int sub = 0;
+	//物品列表
 	for (int h = 0 ; h < 5 ; h++)
 	{
 		for (int l = 0 ; l < 6 ; l++)
@@ -53,6 +55,24 @@ void UBackpack::RefreshBackpack()
 				sub++;
 			}
 			GridPanel->AddChildToUniformGrid(Backpack_Th,h,l);
+		}
+	}
+
+	sum = EquipmentComponent->Equipment.Num();
+	sub = 0;
+	//装备列表
+	for (int h = 0 ; h < 5 ; h++)
+	{
+		for (int l = 0 ; l < 6 ; l++)
+		{
+			UBackpack_Equip* Backpack_Equip = CreateWidget<UBackpack_Equip>(this,BackpackEquipClass);
+			if (sub < sum)
+			{
+				Backpack_Equip->SetEquipWidget(EquipmentComponent->Equipment[sub],this);
+				Backpack_Equip->bUse = true;
+				sub++;
+			}
+			GridPanel_Equipment->AddChildToUniformGrid(Backpack_Equip,h,l);
 		}
 	}
 
@@ -82,6 +102,9 @@ void UBackpack::NativeConstruct()
 	}
 	Button_Character_A->OnClicked.AddDynamic(this, &UBackpack::SetCharacter_A);
 	Button_Character_B->OnClicked.AddDynamic(this, &UBackpack::SetCharacter_B);
+
+	Button_Choose_Item->OnClicked.AddDynamic(this, &UBackpack::ChoosePanel_Item);
+	Button_Choose_Equipment->OnClicked.AddDynamic(this, &UBackpack::ChoosePanel_Equipment);
 }
 
 void UBackpack::SetCharacter_A()
@@ -102,4 +125,14 @@ void UBackpack::SetCharacter_B()
 		CurrentCharacter = MainPlayerController->CharacterB;
 	}
 	RefreshBackpack();
+}
+
+void UBackpack::ChoosePanel_Item()
+{
+	PanelSwitcher->SetActiveWidget(Panel_Item);
+}
+
+void UBackpack::ChoosePanel_Equipment()
+{
+	PanelSwitcher->SetActiveWidget(Panel_Equipment);
 }

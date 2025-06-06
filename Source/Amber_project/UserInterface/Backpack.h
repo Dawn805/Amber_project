@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Backpack_Equip.h"
 #include "Backpack_th.h"
 #include "Amber_project/MainPlayerController.h"
 #include "Amber_project/Backpack/BackpackComponent.h"
@@ -24,6 +25,9 @@ protected:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UBackpackComponent* BackpackComponent;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UEquipmentComponent* EquipmentComponent;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -69,4 +73,29 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Character_Attributes;
+
+	//装备界面
+	UPROPERTY(meta=(bindWidget))
+	UUniformGridPanel* GridPanel_Equipment;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UBackpack_Equip> BackpackEquipClass;
+
+	///界面切换
+	UPROPERTY(meta=(bindWidget))
+	UWidgetSwitcher* PanelSwitcher;
+	UPROPERTY(meta=(bindWidget))
+	UCanvasPanel* Panel_Item;
+	UPROPERTY(meta=(bindWidget))
+	UCanvasPanel* Panel_Equipment;
+
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Choose_Item;
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Choose_Equipment;
+	
+	UFUNCTION(BlueprintCallable)
+	void ChoosePanel_Item();
+	UFUNCTION(BlueprintCallable)
+	void ChoosePanel_Equipment();
 };

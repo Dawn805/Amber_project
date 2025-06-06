@@ -3,6 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Store_Equip.h"
+#include "Amber_project/Backpack/EquipmentComponent.h"
+#include "Components/Button.h"
+#include "Components/CanvasPanel.h"
+#include "Components/WidgetSwitcher.h"
 class UStore_th;
 #include "Amber_project/Backpack/BackpackComponent.h"
 #include "Blueprint/UserWidget.h"
@@ -43,6 +48,7 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
+	//物品界面
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<FStoreItems> StoreItems;
 
@@ -64,8 +70,6 @@ public:
 	UPROPERTY(meta=(bindWidget))
 	UTextBlock* Text_Money;
 
-
-
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* ItemIcon_1;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -74,4 +78,47 @@ public:
 	UTexture2D* ItemIcon_3;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* ItemIcon_4;
+
+	//装备界面
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<FEquipComponent> StoreEquipments;
+
+	UPROPERTY(meta=(bindWidget))
+	UUniformGridPanel* GridPanel_Equipment;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UStore_Equip> StoreEquipClass;
+
+	UFUNCTION(BlueprintCallable)
+	void RefreshEquipment();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* EquipIcon_1;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* EquipIcon_2;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* EquipIcon_5;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* EquipIcon_6;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* EquipIcon_7;
+
+
+	//界面切换
+	UPROPERTY(meta=(bindWidget))
+	UWidgetSwitcher* PanelSwitcher;
+	UPROPERTY(meta=(bindWidget))
+	UCanvasPanel* Panel_Item;
+	UPROPERTY(meta=(bindWidget))
+	UCanvasPanel* Panel_Equipment;
+
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Choose_Item;
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Choose_Equipment;
+	
+	UFUNCTION(BlueprintCallable)
+	void ChoosePanel_Item();
+	UFUNCTION(BlueprintCallable)
+	void ChoosePanel_Equipment();
 };
