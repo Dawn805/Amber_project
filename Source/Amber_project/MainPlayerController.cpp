@@ -131,6 +131,12 @@ void AMainPlayerController::CloseMenu()
 		
 	this->bShowMouseCursor = false;
 	this->SetPause(false);
+
+	if (BackpackWidgetInstance || StoreWidgetInstance)
+	{
+		this->bShowMouseCursor = true;
+		this->SetPause(true);
+	}
 }
 
 void AMainPlayerController::OpenSettings()
@@ -164,7 +170,10 @@ void AMainPlayerController::CloseSettings()
 
 void AMainPlayerController::OpenStore()
 {
+	if (MenuWidgetInstance) return;
+	if (BackpackWidgetInstance) return;
 	if (!bOpenStore) return;
+	
 	if (StoreWidgetClass && !StoreWidgetInstance)
 	{
 		StoreWidgetInstance = CreateWidget<UStore>(GetWorld(),StoreWidgetClass);
@@ -231,6 +240,7 @@ void AMainPlayerController::SwitchCharacter()
 void AMainPlayerController::OpenBackpack()
 {
 	if (MenuWidgetInstance) return;
+	if (StoreWidgetInstance) return;
 	if (BackpackWidgetClass && !BackpackWidgetInstance)
 	{
 		BackpackWidgetInstance = CreateWidget<UBackpack>(GetWorld(),BackpackWidgetClass);

@@ -81,7 +81,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UBackpack_Equip> BackpackEquipClass;
 
-	///界面切换
+	//界面切换
 	UPROPERTY(meta=(bindWidget))
 	UWidgetSwitcher* PanelSwitcher;
 	UPROPERTY(meta=(bindWidget))
@@ -98,4 +98,51 @@ public:
 	void ChoosePanel_Item();
 	UFUNCTION(BlueprintCallable)
 	void ChoosePanel_Equipment();
+
+	//装备槽的显示
+	UPROPERTY(meta=(bindWidget))
+	UImage* Image_Slot0;
+	UPROPERTY(meta=(bindWidget))
+	UImage* Image_Slot1;
+	UPROPERTY(meta=(bindWidget))
+	UImage* Image_Slot2;
+	UPROPERTY(meta=(bindWidget))
+	UImage* Image_Slot3;
+
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Slot0;
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Slot1;
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Slot2;
+	UPROPERTY(meta=(bindWidget))
+	UButton* Button_Slot3;
+
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Slot0_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Slot1_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Slot2_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Slot3_Clicked();
+
+	//装备的卸下
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Remove0;
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Remove1;
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Remove2;
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Remove3;
+
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Remove0_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Remove1_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Remove2_Clicked();
+	UFUNCTION(BlueprintCallable)
+	void On_Button_Remove3_Clicked();
 };

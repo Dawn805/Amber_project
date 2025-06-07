@@ -28,22 +28,18 @@ public:
 
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FEquipComponent Equip_Slot1;
+	FEquipComponent Equip_Slot0;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool Slot1 = false;
+	FEquipComponent Equip_Slot1;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FEquipComponent Equip_Slot2;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool Slot2 = false;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FEquipComponent Equip_Slot3;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool Slot3 = false;
+
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FEquipComponent Equip_Slot4;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool Slot4 = false;
+	TArray<bool> Slots = {false,false,false,false};
 };

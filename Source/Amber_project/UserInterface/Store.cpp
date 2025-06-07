@@ -18,11 +18,11 @@ void UStore::NativeConstruct()
 
 	RefreshItem();
 
-	StoreEquipments.Add({"Sword_Iron",EquipIcon_1,1,1,{0,0,5,0},200});
-	StoreEquipments.Add({"Staff_Iron",EquipIcon_2,1,2,{0,0,5,0},300});
-	StoreEquipments.Add({"Helmet_Iron",EquipIcon_5,2,0,{20,0,0,1},300});
-	StoreEquipments.Add({"Armor_Body_Iron",EquipIcon_6,3,0,{50,0,0,2},500});
-	StoreEquipments.Add({"Armor_Leg_Iron",EquipIcon_7,4,0,{0,20,0,1},200});
+	StoreEquipments.Add({"Sword_Iron",EquipIcon_1,0,1,{0,0,5,0},200});
+	StoreEquipments.Add({"Staff_Iron",EquipIcon_2,0,2,{0,0,5,0},300});
+	StoreEquipments.Add({"Helmet_Iron",EquipIcon_5,1,0,{20,0,0,1},300});
+	StoreEquipments.Add({"Armor_Body_Iron",EquipIcon_6,2,0,{50,0,0,2},500});
+	StoreEquipments.Add({"Armor_Leg_Iron",EquipIcon_7,3,0,{0,20,0,1},200});
 	
 
 	RefreshEquipment();

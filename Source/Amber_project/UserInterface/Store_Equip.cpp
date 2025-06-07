@@ -42,6 +42,8 @@ void UStore_Equip::AddEquipToBackpack()
 		{
 			PlayerController->Money -= Equip.Equip_Cost;
 			PlayerController->EquipmentComponent->Equipment.Add(Equip);
+
+			Store->Item_Describe = Equip.ItemName.ToString();
 		}
 	}
 }
