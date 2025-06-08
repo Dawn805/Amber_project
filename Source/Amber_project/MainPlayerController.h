@@ -11,6 +11,7 @@
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
 #include "Backpack/BackpackComponent.h"
 #include "UserInterface/PlayerStateWidget.h"
+#include "UserInterface/StartScreen.h"
 #include "UserInterface/Store.h"
 class UBackpack;
 class AMainPaperZDCharacter;
@@ -74,25 +75,32 @@ public:
 	void OpenStore();
 
 public:
+	//菜单界面
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> MenuWidgetClass;
 	UPROPERTY()
 	UUserWidget* MenuWidgetInstance = nullptr;
-
+	//设置界面
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> SettingsWidgetClass;
 	UPROPERTY()
 	UUserWidget* SettingsWidgetInstance = nullptr;
-
+	//背包界面
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UBackpack> BackpackWidgetClass;
 	UPROPERTY()
 	UBackpack* BackpackWidgetInstance = nullptr;
-
+	//商店界面
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UStore> StoreWidgetClass;
 	UPROPERTY()
 	UStore* StoreWidgetInstance = nullptr;
+	//开始界面
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UStartScreen> StartScreenClass;
+	UPROPERTY()
+	UStartScreen* StartScreenInstance = nullptr;
+	
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -105,10 +113,14 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> WizardClass;
 
+	//四个角色
+	
+	//确定之后选好的两个角色
 	UPROPERTY()
 	AMainPaperZDCharacter* CharacterA;
 	UPROPERTY()
 	AMainPaperZDCharacter* CharacterB;
+	//当前角色和另一个角色的切换
 	UPROPERTY()
 	AMainPaperZDCharacter* CurrentCharacter;
 	UPROPERTY()
@@ -142,4 +154,8 @@ public:
 	//这是能用的钱
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int Money = 10000;
+
+	//移除开始界面相关的东西
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bStart = false;
 };

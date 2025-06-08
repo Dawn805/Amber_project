@@ -29,51 +29,78 @@ void AMainPlayerController::BeginPlay()
 	}
 
 	InitKeySave();
-	
-//切换角色尝试
-	FVector SpawnLoc = FVector(20, 0, 0);
-	FRotator SpawnRot = FRotator::ZeroRotator;
 
-	CharacterA = GetWorld()->SpawnActor<AMainPaperZDCharacter>(SwordsmanClass, SpawnLoc, SpawnRot);
-	CharacterB = GetWorld()->SpawnActor<AMainPaperZDCharacter>(WizardClass, SpawnLoc, SpawnRot);
-	CharacterB->SetActorHiddenInGame(true);     
-	CharacterB->SetActorEnableCollision(false); 
-	CharacterB->SetActorTickEnabled(false);     
-
-	CurrentCharacter = CharacterA;
-	AnotherCharacter = CharacterB;
-
-	Possess(CurrentCharacter);
-
-	
-//给角色添加PlayerState
-	UWorld* World = GetWorld();
-	if (World)
+	//进入开始界面
+	if (StartScreenClass)
 	{
-		FString MapName = World->GetMapName();
-		MapName.RemoveFromStart(World->StreamingLevelsPrefix);
-		if (PlayerStateWidgetClass)
+		StartScreenInstance = CreateWidget<UStartScreen>(this, StartScreenClass);
+		if (StartScreenInstance)
 		{
-			PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
-			if (PlayerStateWidgetInstance)
-			{
-				PlayerStateWidgetInstance->PlayerController = this;
-				PlayerStateWidgetInstance->AddToViewport();
-			}
+			StartScreenInstance->AddToViewport();
+			this->bShowMouseCursor = true;
+			this->SetPause(true);
 		}
-		
 	}
+
+
+
+	
+	
+// //切换角色尝试
+// 	FVector SpawnLoc = FVector(20, 0, 0);
+// 	FRotator SpawnRot = FRotator::ZeroRotator;
+//
+// 	CharacterA = GetWorld()->SpawnActor<AMainPaperZDCharacter>(SwordsmanClass, SpawnLoc, SpawnRot);
+// 	CharacterB = GetWorld()->SpawnActor<AMainPaperZDCharacter>(WizardClass, SpawnLoc, SpawnRot);
+// 	CharacterB->SetActorHiddenInGame(true);     
+// 	CharacterB->SetActorEnableCollision(false); 
+// 	CharacterB->SetActorTickEnabled(false);     
+//
+// 	CurrentCharacter = CharacterA;
+// 	AnotherCharacter = CharacterB;
+//
+// 	Possess(CurrentCharacter);
+//
+// 	
+// //给角色添加PlayerState
+// 	UWorld* World = GetWorld();
+// 	if (World)
+// 	{
+// 		FString MapName = World->GetMapName();
+// 		MapName.RemoveFromStart(World->StreamingLevelsPrefix);
+// 		if (PlayerStateWidgetClass)
+// 		{
+// 			PlayerStateWidgetInstance = CreateWidget<UPlayerStateWidget>(this, PlayerStateWidgetClass);
+// 			if (PlayerStateWidgetInstance)
+// 			{
+// 				PlayerStateWidgetInstance->PlayerController = this;
+// 				PlayerStateWidgetInstance->AddToViewport();
+// 			}
+// 		}
+// 		
+// 	}
 }
 
 void AMainPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (CurrentCharacter->StateComponent->HP <= 0)
+	if (bStart)
 	{
-		if (AnotherCharacter->StateComponent->HP > 0)
+		StartScreenInstance->SelectCharacterInstance->RemoveFromParent();
+		StartScreenInstance->SelectCharacterInstance = nullptr;
+		StartScreenInstance->RemoveFromParent();
+		StartScreenInstance = nullptr;
+		bStart = false;
+	}
+	if (!StartScreenInstance)
+	{
+		if (CurrentCharacter->StateComponent->HP <= 0)
 		{
-			CurrentCharacter->StateComponent->HP = 0;
-			SwitchCharacter();
+			if (AnotherCharacter->StateComponent->HP > 0)
+			{
+				CurrentCharacter->StateComponent->HP = 0;
+				SwitchCharacter();
+			}
 		}
 	}
 }
@@ -97,6 +124,7 @@ void AMainPlayerController::SetupInputComponent()
 
 void AMainPlayerController::OpenMenu(const struct FInputActionInstance& Instance)
 {
+	if (StartScreenInstance) return;
 	if (MenuWidgetClass && !MenuWidgetInstance)
 	{
 		MenuWidgetInstance = CreateWidget<UUserWidget>(GetWorld(),MenuWidgetClass);
@@ -141,6 +169,7 @@ void AMainPlayerController::CloseMenu()
 
 void AMainPlayerController::OpenSettings()
 {
+	if (StartScreenInstance) return;
 	if (SettingsWidgetClass && !SettingsWidgetInstance)
 	{
 		SettingsWidgetInstance = CreateWidget<UUserWidget>(GetWorld(),SettingsWidgetClass);
@@ -170,6 +199,7 @@ void AMainPlayerController::CloseSettings()
 
 void AMainPlayerController::OpenStore()
 {
+	if (StartScreenInstance) return;
 	if (MenuWidgetInstance) return;
 	if (BackpackWidgetInstance) return;
 	if (!bOpenStore) return;
@@ -239,6 +269,7 @@ void AMainPlayerController::SwitchCharacter()
 
 void AMainPlayerController::OpenBackpack()
 {
+	if (StartScreenInstance) return;
 	if (MenuWidgetInstance) return;
 	if (StoreWidgetInstance) return;
 	if (BackpackWidgetClass && !BackpackWidgetInstance)
