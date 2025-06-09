@@ -73,4 +73,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int Character_ID = 0;
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bJumpUse = true;
 };

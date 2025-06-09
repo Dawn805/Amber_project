@@ -15,7 +15,7 @@ void UNotify_Enemy_AttackBox::OnReceiveNotify_Implementation(UPaperZDAnimInstanc
 	{
 		FVector Location = SequenceRenderComponent->GetComponentLocation();
 		if (SocketName != "No") Location = SequenceRenderComponent->GetSocketLocation(SocketName);
-		DrawDebugBox(this->GetWorld(),Location,BoxExtent,FColor::Red,true);
+		DrawDebugBox(this->GetWorld(),Location,BoxExtent,FColor::Red,false,2);
 	}
 	else
 	{

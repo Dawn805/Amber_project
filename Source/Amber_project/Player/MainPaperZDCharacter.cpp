@@ -54,7 +54,7 @@ void AMainPaperZDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		if (MoveLeftAction)
 			EnhancedInput->BindAction(MoveLeftAction, ETriggerEvent::Triggered, this,&AMainPaperZDCharacter::MoveLeft);
 		if (MoveJumpAction)
-			EnhancedInput->BindAction(MoveJumpAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Jump);
+			EnhancedInput->BindAction(MoveJumpAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::MoveJump);
 		if (Attack_JAction)
 			EnhancedInput->BindAction(Attack_JAction, ETriggerEvent::Started, this, &AMainPaperZDCharacter::Attack_J);
 		if (Attack_UAction)
@@ -116,6 +116,7 @@ void AMainPaperZDCharacter::MoveRight(const FInputActionInstance& Instance)
 
 void AMainPaperZDCharacter::MoveJump(const struct FInputActionInstance& Instance)
 {
+	if (this->bJumpUse == false) return;
 	Super::Jump();
 }
 

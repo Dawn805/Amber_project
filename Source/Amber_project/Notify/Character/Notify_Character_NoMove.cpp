@@ -16,6 +16,7 @@ void UNotify_Character_NoMove::OnNotifyBegin_Implementation(UPaperZDAnimInstance
 	
 	ZDCharacter->GetCharacterMovement()->MaxWalkSpeed = BeginSpeed;
 
+	ZDCharacter->bJumpUse = false;
 }
 
 void UNotify_Character_NoMove::OnNotifyEnd_Implementation(UPaperZDAnimInstance* OwningInstance) const
@@ -27,4 +28,5 @@ void UNotify_Character_NoMove::OnNotifyEnd_Implementation(UPaperZDAnimInstance* 
 	
 	ZdCharacter->GetCharacterMovement()->MaxWalkSpeed = EndSpeed;
 
+	ZdCharacter->bJumpUse = true;
 }
