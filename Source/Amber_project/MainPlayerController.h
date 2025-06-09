@@ -115,6 +115,8 @@ public:
 	TSubclassOf<AMainPaperZDCharacter> WizardClass;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> PriestClass;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AMainPaperZDCharacter> KnightClass;
 	
 	//确定之后选好的两个角色
 	UPROPERTY()
@@ -142,6 +144,10 @@ public:
 	UTexture2D* Image_Character_Swordsman;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* Image_Character_Wizard;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* Image_Character_Priest;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* Image_Character_Knight;
 
 	//装备
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)

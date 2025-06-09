@@ -54,6 +54,18 @@ void UBackpack::RefreshBackpack()
 			Brush.SetResourceObject(MainPlayerController->Image_Character_Wizard);
 			Character_Image->SetBrush(Brush);
 		}
+		if (CurrentCharacter->Character_ID == 3)
+		{
+			FSlateBrush Brush;
+			Brush.SetResourceObject(MainPlayerController->Image_Character_Priest);
+			Character_Image->SetBrush(Brush);
+		}
+		if (CurrentCharacter->Character_ID == 4)
+		{
+			FSlateBrush Brush;
+			Brush.SetResourceObject(MainPlayerController->Image_Character_Knight);
+			Character_Image->SetBrush(Brush);
+		}
 	}
 
 	int sum = BackpackComponent->Backpack_Items.Num();	

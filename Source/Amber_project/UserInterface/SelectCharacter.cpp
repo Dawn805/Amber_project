@@ -37,6 +37,13 @@ void USelectCharacter::OnSelectPriest()
 	SelectedClasses.Add(PriestClass);
 }
 
+void USelectCharacter::OnSelectKnight()
+{
+	if (SelectedClasses.Contains(KnightClass)) return;
+	if (SelectedClasses.Num() >= 2) return;
+	SelectedClasses.Add(KnightClass);
+}
+
 void USelectCharacter::OnConfirmSelection()
 {
 	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
