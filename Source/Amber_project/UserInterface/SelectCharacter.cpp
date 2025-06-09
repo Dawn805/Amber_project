@@ -12,6 +12,7 @@ void USelectCharacter::NativeConstruct()
 
 	Button_Sword->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectSwordsman);
 	Button_Wizard->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectWizard);
+	Button_Priest->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectPriest);
 	Button_OnConfirmSelection->OnClicked.AddDynamic(this,&USelectCharacter::OnConfirmSelection);
 }
 
@@ -27,6 +28,13 @@ void USelectCharacter::OnSelectWizard()
 	if (SelectedClasses.Contains(WizardClass)) return;
 	if (SelectedClasses.Num() >= 2) return;
 	SelectedClasses.Add(WizardClass);
+}
+
+void USelectCharacter::OnSelectPriest()
+{
+	if (SelectedClasses.Contains(PriestClass)) return;
+	if (SelectedClasses.Num() >= 2) return;
+	SelectedClasses.Add(PriestClass);
 }
 
 void USelectCharacter::OnConfirmSelection()

@@ -108,12 +108,13 @@ public:
 
 //更换角色
 public:
+	//四个角色
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> SwordsmanClass;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> WizardClass;
-
-	//四个角色
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AMainPaperZDCharacter> PriestClass;
 	
 	//确定之后选好的两个角色
 	UPROPERTY()

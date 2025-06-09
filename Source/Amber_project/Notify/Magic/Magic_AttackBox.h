@@ -22,4 +22,16 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	mutable TArray<AMainPaperZDEnemy*> Enemies;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FName SocketName = "No";
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FVector BoxExtent = {10,10,10};
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float AttackDamage_Mult = 1.0f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float BreakPoise = 20.0f;
 };

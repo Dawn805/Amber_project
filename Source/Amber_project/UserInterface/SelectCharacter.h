@@ -24,6 +24,8 @@ public:
 	UButton* Button_Sword;
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Wizard;
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Priest;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_OnConfirmSelection;
@@ -31,16 +33,22 @@ public:
 	UPROPERTY()
 	TArray<TSubclassOf<AMainPaperZDCharacter>> SelectedClasses;
 
+	//剑士
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> SwordsmanClass;
-
+	//法师
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AMainPaperZDCharacter> WizardClass;
+	//牧师
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AMainPaperZDCharacter> PriestClass;
 
 	UFUNCTION(BlueprintCallable)
 	void OnSelectSwordsman();
 	UFUNCTION(BlueprintCallable)
 	void OnSelectWizard();
+	UFUNCTION(BlueprintCallable)
+	void OnSelectPriest();
 
 	UFUNCTION(BlueprintCallable)
 	void OnConfirmSelection();
