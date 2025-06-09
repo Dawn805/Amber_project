@@ -13,6 +13,7 @@ void USelectCharacter::NativeConstruct()
 	Button_Sword->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectSwordsman);
 	Button_Wizard->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectWizard);
 	Button_Priest->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectPriest);
+	Button_Knight->OnClicked.AddDynamic(this,&USelectCharacter::OnSelectKnight);
 	Button_OnConfirmSelection->OnClicked.AddDynamic(this,&USelectCharacter::OnConfirmSelection);
 }
 
@@ -46,6 +47,7 @@ void USelectCharacter::OnSelectKnight()
 
 void USelectCharacter::OnConfirmSelection()
 {
+	if (SelectedClasses.Num() < 2) return;
 	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(this,0));
 	
 	FVector SpawnLoc = FVector(20, 0, 0);

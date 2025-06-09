@@ -15,7 +15,7 @@ void UNotify_AttackBox::OnReceiveNotify_Implementation(UPaperZDAnimInstance* Own
 		FVector Location = SequenceRenderComponent->GetComponentLocation();
 		if (SocketName != "No") Location = SequenceRenderComponent->GetSocketLocation(SocketName);
 
-		DrawDebugBox(this->GetWorld(),Location,BoxExtent,BoxColor,true);
+		DrawDebugBox(this->GetWorld(),Location,BoxExtent,BoxColor,false,2);
 	}
 
 	else
