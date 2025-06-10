@@ -28,6 +28,10 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Exit;
 
+	//读档
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_LoadGame;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void Button_Continue_OnClicked();
@@ -35,4 +39,6 @@ public:
 	void Button_Exit_OnClicked();
 	UFUNCTION(BlueprintCallable)
 	void Button_Settings_OnClicked();
+	UFUNCTION(BlueprintCallable)
+	void Button_LoadGame_OnClicked();
 };

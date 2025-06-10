@@ -53,6 +53,9 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UInputAction* OpenStoreAction;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UInputAction* SaveGameAction;
+
 	UFUNCTION(BlueprintCallable)
 	void OpenMenu(const struct FInputActionInstance& Instance);
 	UFUNCTION(BlueprintCallable)
@@ -73,6 +76,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OpenStore();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveGameFunction();
+	UFUNCTION(BlueprintCallable)
+	void LoadGameFunction();
 
 public:
 	//菜单界面
@@ -165,4 +173,8 @@ public:
 	//移除开始界面相关的东西
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool bStart = false;
+
+	//能否存档
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bSave = false;
 };

@@ -8,6 +8,7 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "SaveGame/GameSave.h"
 #include "UserInterface/Backpack.h"
 
 AMainPlayerController::AMainPlayerController()
@@ -119,6 +120,8 @@ void AMainPlayerController::SetupInputComponent()
 			EnhancedInput->BindAction(OpenBackpackAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenBackpack);
 		if (OpenStoreAction)
 			EnhancedInput->BindAction(OpenStoreAction,ETriggerEvent::Started,this,&AMainPlayerController::OpenStore);
+		if (SaveGameAction)
+			EnhancedInput->BindAction(SaveGameAction,ETriggerEvent::Started,this,&AMainPlayerController::SaveGameFunction);
 	}
 }
 
@@ -302,3 +305,18 @@ void AMainPlayerController::CloseBackpack()
 	}
 }
 
+void AMainPlayerController::SaveGameFunction()
+{
+	if (bSave == false) return;
+	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
+	if (!SaveGameInstance) return;
+	SaveGameInstance->SaveGame();
+	UKismetSystemLibrary::PrintString(this,"111");
+}
+
+void AMainPlayerController::LoadGameFunction()
+{
+	UGameSave* LoadedGame = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
+	if (!LoadedGame) return;
+	LoadedGame->LoadGame(); 
+}

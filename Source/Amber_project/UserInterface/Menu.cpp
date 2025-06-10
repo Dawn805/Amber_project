@@ -14,10 +14,10 @@ void UMenu::NativeConstruct()
 		Button_Continue->OnClicked.AddDynamic(this,&UMenu::Button_Continue_OnClicked);
 	if (Button_Settings)
 		Button_Settings->OnClicked.AddDynamic(this,&UMenu::Button_Settings_OnClicked);
-
 	if (Button_Exit)
 		Button_Exit->OnClicked.AddDynamic(this,&UMenu::UMenu::Button_Exit_OnClicked);
-	
+	if (Button_LoadGame)
+		Button_LoadGame->OnClicked.AddDynamic(this,&UMenu::Button_LoadGame_OnClicked);
 }
 
 void UMenu::Button_Continue_OnClicked()
@@ -39,4 +39,10 @@ void UMenu::Button_Settings_OnClicked()
 	{
 		MainPlayerController->OpenSettings();
 	}
+}
+
+void UMenu::Button_LoadGame_OnClicked()
+{
+	AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetOwningPlayer());
+	MainPlayerController->LoadGameFunction();
 }
