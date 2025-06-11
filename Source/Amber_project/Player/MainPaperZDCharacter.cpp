@@ -4,7 +4,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimInstance.h"
+#include "Amber_project/Enemy/MainPaperZDEnemy.h"
 #include "Amber_project/UserInterface/Component/KeySaveLibrary.h"
+#include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AMainPaperZDCharacter::AMainPaperZDCharacter()
@@ -12,6 +14,8 @@ AMainPaperZDCharacter::AMainPaperZDCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	StateComponent = CreateDefaultSubobject<UStateComponent>("StateComponent");
 	Equipment = CreateDefaultSubobject<UEquipment>("Equipment");
+	
+	
 }
 
 void AMainPaperZDCharacter::BeginPlay()

@@ -110,13 +110,6 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int Money = 0;
 
-
-	UFUNCTION(BlueprintCallable)
-	void SaveGame();
-
-	UFUNCTION(BlueprintCallable)
-	void LoadGame();
-
 	UFUNCTION(BlueprintCallable)
 	void GetEquipInfor(FEquipComponent_SaveData &Equip_A,FEquipComponent &Equip_B);
 
@@ -126,3 +119,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEquipInfor(FEquipComponent &Equip_A,FEquipComponent_SaveData &Equip_B);
 };
+
+void SaveGame(UObject* WorldContextObject);
+void LoadGame(UObject* WorldContextObject);

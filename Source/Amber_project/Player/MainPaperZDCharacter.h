@@ -6,6 +6,7 @@
 #include "InputMappingContext.h"
 #include "Amber_project/Player/Component/StateComponent.h"
 #include "Component/Equipment.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "MainPaperZDCharacter.generated.h"
 

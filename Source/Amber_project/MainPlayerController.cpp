@@ -6,6 +6,7 @@
 #include "Player/MainPaperZDCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperFlipbookComponent.h"
+#include "Audio/MainMusicManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "SaveGame/GameSave.h"
@@ -43,7 +44,17 @@ void AMainPlayerController::BeginPlay()
 		}
 	}
 
-
+	UMainMusicManager* MusicManager = GetWorld()->GetSubsystem<UMainMusicManager>();
+	if (MusicManager)
+	{
+		FAudioBGM NewBGM;
+		NewBGM.BGM = BackgroundMusic;
+		NewBGM.Priority = 1;
+		NewBGM.FadeInTime = 1.0f;
+		NewBGM.FadeOutTime = 1.0f;
+            
+		MusicManager->PlayNewBGM(NewBGM);
+	}
 
 	
 	
@@ -87,16 +98,27 @@ void AMainPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bStart)
 	{
-		StartScreenInstance->SelectCharacterInstance->RemoveFromParent();
-		StartScreenInstance->SelectCharacterInstance = nullptr;
-		StartScreenInstance->RemoveFromParent();
-		StartScreenInstance = nullptr;
+		if (StartScreenInstance->SelectCharacterInstance) StartScreenInstance->SelectCharacterInstance->RemoveFromParent();
+		if (StartScreenInstance->SelectCharacterInstance) StartScreenInstance->SelectCharacterInstance = nullptr;
+		if (StartScreenInstance) StartScreenInstance->RemoveFromParent();
+		if (StartScreenInstance) StartScreenInstance = nullptr;
 		bStart = false;
 	}
 	if (!StartScreenInstance)
 	{
 		if (CurrentCharacter->StateComponent->HP <= 0)
 		{
+			if (AnotherCharacter->StateComponent->HP <= 0)
+			{
+				if (UGameplayStatics::DoesSaveGameExist(TEXT("PlayerSaveSlot"), 0))
+				{
+					LoadGame(this);
+					return;
+				}else
+				{
+					UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+				}
+			}
 			if (AnotherCharacter->StateComponent->HP > 0)
 			{
 				CurrentCharacter->StateComponent->HP = 0;
@@ -308,15 +330,10 @@ void AMainPlayerController::CloseBackpack()
 void AMainPlayerController::SaveGameFunction()
 {
 	if (bSave == false) return;
-	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
-	if (!SaveGameInstance) return;
-	SaveGameInstance->SaveGame();
-	UKismetSystemLibrary::PrintString(this,"111");
+	SaveGame(this);
 }
 
 void AMainPlayerController::LoadGameFunction()
 {
-	UGameSave* LoadedGame = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("PlayerSaveSlot", 0));
-	if (!LoadedGame) return;
-	LoadedGame->LoadGame(); 
+	LoadGame(this);
 }

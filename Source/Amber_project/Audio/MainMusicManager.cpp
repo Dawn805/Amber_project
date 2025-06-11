@@ -132,7 +132,11 @@ void UMainMusicManager::PlayNewBGM(FAudioBGM NewBGM)
 	//如果新加入的音频优先级和当前播放的一样，如果列表里面有，那就删掉列表中的音频并且在开头加上新音频，如果没有，就直接加上
 	if (NewBGM.Priority == BGMs[0].Priority)
 	{
-		for (int i = 0 ; i < sum ; i++)
+		if (BGMs[0].BGM == NewBGM.BGM)
+		{
+			return;
+		}
+		for (int i = 1 ; i < sum ; i++)
 		{
 			if (BGMs[i].BGM == NewBGM.BGM)
 			{

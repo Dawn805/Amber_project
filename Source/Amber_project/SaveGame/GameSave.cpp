@@ -7,64 +7,73 @@
 #include "Amber_project/DataTable/ItemRow.h"
 #include "Kismet/GameplayStatics.h"
 
-void UGameSave::SaveGame()
+void SaveGame(UObject* WorldContextObject)
 {
-	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!WorldContextObject) return;
+	//世界
+	UWorld* World = WorldContextObject->GetWorld();
+	if (!World) return;
+	//控制器
+	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(World, 0));
 	if (!PlayerController) return;
+	//存档实例
+	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
+	if (!SaveGameInstance) return;
+	
 	//人物的位置
-	PlayerLocation = PlayerController->CurrentCharacter->GetActorLocation();
+	SaveGameInstance->PlayerLocation = PlayerController->CurrentCharacter->GetActorLocation();
 	//人物的朝向
-	PlayerRotation = PlayerController->CurrentCharacter->GetActorRotation();
+	SaveGameInstance->PlayerRotation = PlayerController->CurrentCharacter->GetActorRotation();
 	//角色的ID
-	CharacterID_A = PlayerController->CharacterA->Character_ID;
-	CharacterID_B = PlayerController->CharacterB->Character_ID;
+	SaveGameInstance->CharacterID_A = PlayerController->CharacterA->Character_ID;
+	SaveGameInstance->CharacterID_B = PlayerController->CharacterB->Character_ID;
 	//当前控制角色的ID
-	CharacterID_Current = PlayerController->CurrentCharacter->Character_ID;
+	SaveGameInstance->CharacterID_Current = PlayerController->CurrentCharacter->Character_ID;
 	//人物当前的属性
-	Attribute_A.Empty();
-	Attribute_A.Add(PlayerController->CharacterA->StateComponent->HP_Max);
-	Attribute_A.Add(PlayerController->CharacterA->StateComponent->MP_Max);
-	Attribute_A.Add(PlayerController->CharacterA->StateComponent->Damage);
-	Attribute_A.Add(PlayerController->CharacterA->StateComponent->Defense);
-	Attribute_B.Empty();
-	Attribute_B.Add(PlayerController->CharacterB->StateComponent->HP_Max);
-	Attribute_B.Add(PlayerController->CharacterB->StateComponent->MP_Max);
-	Attribute_B.Add(PlayerController->CharacterB->StateComponent->Damage);
-	Attribute_B.Add(PlayerController->CharacterB->StateComponent->Defense);
+	SaveGameInstance->Attribute_A.Empty();
+	SaveGameInstance->Attribute_A.Add(PlayerController->CharacterA->StateComponent->HP_Max);
+	SaveGameInstance->Attribute_A.Add(PlayerController->CharacterA->StateComponent->MP_Max);
+	SaveGameInstance->Attribute_A.Add(PlayerController->CharacterA->StateComponent->Damage);
+	SaveGameInstance->Attribute_A.Add(PlayerController->CharacterA->StateComponent->Defense);
+	SaveGameInstance->Attribute_B.Empty();
+	SaveGameInstance->Attribute_B.Add(PlayerController->CharacterB->StateComponent->HP_Max);
+	SaveGameInstance->Attribute_B.Add(PlayerController->CharacterB->StateComponent->MP_Max);
+	SaveGameInstance->Attribute_B.Add(PlayerController->CharacterB->StateComponent->Damage);
+	SaveGameInstance->Attribute_B.Add(PlayerController->CharacterB->StateComponent->Defense);
 	//人物当前的装备
 	for (int i = 0 ; i < 4 ; i++)
 	{
-		Slot_A[i] = PlayerController->CharacterA->Equipment->Slots[i];
-		if (Slot_A[i] == true)
+		SaveGameInstance->Slot_A[i] = PlayerController->CharacterA->Equipment->Slots[i];
+		if (SaveGameInstance->Slot_A[i] == true)
 		{
-			if (i == 0) GetEquipInfor(Equip_A_Slot0,PlayerController->CharacterA->Equipment->Equip_Slot0);
-			if (i == 1) GetEquipInfor(Equip_A_Slot1,PlayerController->CharacterA->Equipment->Equip_Slot1);
-			if (i == 2) GetEquipInfor(Equip_A_Slot2,PlayerController->CharacterA->Equipment->Equip_Slot2);
-			if (i == 3) GetEquipInfor(Equip_A_Slot3,PlayerController->CharacterA->Equipment->Equip_Slot3);
+			if (i == 0) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_A_Slot0,PlayerController->CharacterA->Equipment->Equip_Slot0);
+			if (i == 1) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_A_Slot1,PlayerController->CharacterA->Equipment->Equip_Slot1);
+			if (i == 2) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_A_Slot2,PlayerController->CharacterA->Equipment->Equip_Slot2);
+			if (i == 3) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_A_Slot3,PlayerController->CharacterA->Equipment->Equip_Slot3);
 		}
 	}
 	for (int i = 0 ; i < 4 ; i++)
 	{
-		Slot_B[i] = PlayerController->CharacterB->Equipment->Slots[i];
-		if (Slot_B[i] == true)
+		SaveGameInstance->Slot_B[i] = PlayerController->CharacterB->Equipment->Slots[i];
+		if (SaveGameInstance->Slot_B[i] == true)
 		{
-			if (i == 0) GetEquipInfor(Equip_B_Slot0,PlayerController->CharacterB->Equipment->Equip_Slot0);
-			if (i == 1) GetEquipInfor(Equip_B_Slot1,PlayerController->CharacterB->Equipment->Equip_Slot1);
-			if (i == 2) GetEquipInfor(Equip_B_Slot2,PlayerController->CharacterB->Equipment->Equip_Slot2);
-			if (i == 3) GetEquipInfor(Equip_B_Slot3,PlayerController->CharacterB->Equipment->Equip_Slot3);
+			if (i == 0) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_B_Slot0,PlayerController->CharacterB->Equipment->Equip_Slot0);
+			if (i == 1) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_B_Slot1,PlayerController->CharacterB->Equipment->Equip_Slot1);
+			if (i == 2) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_B_Slot2,PlayerController->CharacterB->Equipment->Equip_Slot2);
+			if (i == 3) SaveGameInstance->GetEquipInfor(SaveGameInstance->Equip_B_Slot3,PlayerController->CharacterB->Equipment->Equip_Slot3);
 		}
 	}
 	//背包的物品
-	Backpack_Items.Empty();
+	SaveGameInstance->Backpack_Items.Empty();
 	for (int i = 0 ; i < PlayerController->BackpackComponent->Backpack_Items.Num() ; i++)
 	{
 		FBackpackItem_SaveData SaveData;
 		SaveData.ItemName = PlayerController->BackpackComponent->Backpack_Items[i].ItemName;
 		SaveData.ItemCount = PlayerController->BackpackComponent->Backpack_Items[i].ItemCount;
-		Backpack_Items.Add(SaveData);
+		SaveGameInstance->Backpack_Items.Add(SaveData);
 	}
 	//背包的装备
-	Backpack_Equip.Empty();
+	SaveGameInstance->Backpack_Equip.Empty();
 	for (int i = 0 ; i < PlayerController->EquipmentComponent->Equipment.Num() ; i++)
 	{
 		FEquipComponent_SaveData SaveData;
@@ -73,20 +82,25 @@ void UGameSave::SaveGame()
 		SaveData.Character_ID = PlayerController->EquipmentComponent->Equipment[i].Character_ID;
 		SaveData.Attribute = PlayerController->EquipmentComponent->Equipment[i].Attribute;
 		SaveData.Equip_Cost = PlayerController->EquipmentComponent->Equipment[i].Equip_Cost;
-		Backpack_Equip.Add(SaveData);
+		SaveGameInstance->Backpack_Equip.Add(SaveData);
 	}
 	//钱
-	Money = PlayerController->Money;
-
+	SaveGameInstance->Money = PlayerController->Money;
 	//保存到网盘
-	UGameplayStatics::SaveGameToSlot(this, TEXT("PlayerSaveSlot"), 0);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("PlayerSaveSlot"), 0);
 }
 
-void UGameSave::LoadGame()
+void LoadGame(UObject* WorldContextObject)
 {
+	if (!WorldContextObject) return;
+
+	UWorld* World = WorldContextObject->GetWorld();
+	if (!World) return;
+	
 	UGameSave* LoadedGame = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot(TEXT("PlayerSaveSlot"), 0));
 	if (!LoadedGame) return;
-	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	
+	AMainPlayerController* PlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(World, 0));
 	if (!PlayerController) return;
 	//解除控制
 	PlayerController->UnPossess();
@@ -103,7 +117,6 @@ void UGameSave::LoadGame()
 	}
 	//等下图片的加载从这里面加载
 	UDataTable* ItemIconTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/DataTable/ItemIconDataTable.ItemIconDataTable"));
-	
 	//加载角色
 	TArray<TSubclassOf<AMainPaperZDCharacter>> SelectedClasses;
 	SelectedClasses.Add(PlayerController->SwordsmanClass);
@@ -111,8 +124,8 @@ void UGameSave::LoadGame()
 	SelectedClasses.Add(PlayerController->PriestClass);
 	SelectedClasses.Add(PlayerController->KnightClass);
 
-	PlayerController->CharacterA = GetWorld()->SpawnActor<AMainPaperZDCharacter>(SelectedClasses[LoadedGame->CharacterID_A-1], LoadedGame->PlayerLocation, LoadedGame->PlayerRotation);
-	PlayerController->CharacterB = GetWorld()->SpawnActor<AMainPaperZDCharacter>(SelectedClasses[LoadedGame->CharacterID_B-1], LoadedGame->PlayerLocation, LoadedGame->PlayerRotation);
+	PlayerController->CharacterA = World->SpawnActor<AMainPaperZDCharacter>(SelectedClasses[LoadedGame->CharacterID_A-1], LoadedGame->PlayerLocation, LoadedGame->PlayerRotation);
+	PlayerController->CharacterB = World->SpawnActor<AMainPaperZDCharacter>(SelectedClasses[LoadedGame->CharacterID_B-1], LoadedGame->PlayerLocation, LoadedGame->PlayerRotation);
 	PlayerController->CharacterB->SetActorHiddenInGame(true);     
 	PlayerController->CharacterB->SetActorEnableCollision(false); 
 	PlayerController->CharacterB->SetActorTickEnabled(false);     
@@ -143,19 +156,19 @@ void UGameSave::LoadGame()
 		PlayerController->CharacterA->Equipment->Slots[i] = LoadedGame->Slot_A[i];
 		if (LoadedGame->Slot_A[i] == true)
 		{
-			if (i == 0) SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot0,LoadedGame->Equip_A_Slot0);
-			if (i == 1) SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot1,LoadedGame->Equip_A_Slot1);
-			if (i == 2) SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot2,LoadedGame->Equip_A_Slot2);
-			if (i == 3) SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot3,LoadedGame->Equip_A_Slot3);
+			if (i == 0) LoadedGame->SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot0,LoadedGame->Equip_A_Slot0);
+			if (i == 1) LoadedGame->SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot1,LoadedGame->Equip_A_Slot1);
+			if (i == 2) LoadedGame->SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot2,LoadedGame->Equip_A_Slot2);
+			if (i == 3) LoadedGame->SetEquipInfor(PlayerController->CharacterA->Equipment->Equip_Slot3,LoadedGame->Equip_A_Slot3);
 		}
 		
 		PlayerController->CharacterB->Equipment->Slots[i] = LoadedGame->Slot_B[i];
 		if (LoadedGame->Slot_B[i] == true)
 		{
-			if (i == 0) SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot0,LoadedGame->Equip_B_Slot0);
-			if (i == 1) SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot1,LoadedGame->Equip_B_Slot1);
-			if (i == 2) SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot2,LoadedGame->Equip_B_Slot2);
-			if (i == 3) SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot3,LoadedGame->Equip_B_Slot3);
+			if (i == 0) LoadedGame->SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot0,LoadedGame->Equip_B_Slot0);
+			if (i == 1) LoadedGame->SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot1,LoadedGame->Equip_B_Slot1);
+			if (i == 2) LoadedGame->SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot2,LoadedGame->Equip_B_Slot2);
+			if (i == 3) LoadedGame->SetEquipInfor(PlayerController->CharacterB->Equipment->Equip_Slot3,LoadedGame->Equip_B_Slot3);
 		}
 	}
 
@@ -170,7 +183,7 @@ void UGameSave::LoadGame()
 		Equip.Attribute = LoadedGame->Backpack_Equip[i].Attribute;
 		Equip.Equip_Cost = LoadedGame->Backpack_Equip[i].Equip_Cost;
 
-		Equip.ItemIcon = GetItemIconByName(ItemIconTable,LoadedGame->Backpack_Equip[i].ItemName);
+		Equip.ItemIcon = LoadedGame->GetItemIconByName(ItemIconTable,LoadedGame->Backpack_Equip[i].ItemName);
 
 		PlayerController->EquipmentComponent->Equipment.Add(Equip);
 	}
@@ -183,7 +196,7 @@ void UGameSave::LoadGame()
 		Item.ItemName = LoadedGame->Backpack_Items[i].ItemName;
 		Item.ItemCount = LoadedGame->Backpack_Items[i].ItemCount;
 
-		Item.ItemIcon = GetItemIconByName(ItemIconTable,Item.ItemName);
+		Item.ItemIcon = LoadedGame->GetItemIconByName(ItemIconTable,Item.ItemName);
 
 		PlayerController->BackpackComponent->Backpack_Items.Add(Item);
 	}
@@ -203,13 +216,13 @@ void UGameSave::GetEquipInfor(FEquipComponent_SaveData &Equip_A, FEquipComponent
 UTexture2D* UGameSave::GetItemIconByName(UDataTable* ItemIconTable, FName ItemName)
 {
 	if (!ItemIconTable) return nullptr;
-
+	
 	FItemIconRow* Row = ItemIconTable->FindRow<FItemIconRow>(ItemName, TEXT("ItemIcon"));
 	if (Row)
 	{
 		return Row->ItemIcon;
 	}
-
+	
 	return nullptr;
 }
 

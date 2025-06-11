@@ -177,4 +177,14 @@ public:
 	//能否存档
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool bSave = false;
+
+	//播放战斗音乐了没有
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bFightMusic = false;
+	//战斗音乐
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USoundBase* FightMusic;
+	//普通背景音乐
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USoundBase* BackgroundMusic;
 };
